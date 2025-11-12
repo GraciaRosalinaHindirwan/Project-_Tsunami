@@ -5,48 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIM TSUNAMI - Sistem Informasi Manajemen Tsunami Indonesia</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="header">
-    <div class="header-content">
-        <div class="logo">
-            <i class="fas fa-water"></i>
-            <div>
-                <h1>SIM TSUNAMI</h1>
-                <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-water"></i>
+                <div>
+                    <h1>SIM TSUNAMI</h1>
+                    <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="evakuasi.html" class="nav-btn active">
+                    <i class="fas fa-running"></i> Evakuasi
+                </a>
+                <a href="education.html" class="nav-btn"> 
+                    <i class="fas fa-book"></i> Edukasi
+                </a>
+                <a href="mitigasi.html" class="nav-btn">
+                    <i class="fas fa-shield-alt"></i> Mitigasi
+                </a>
+                <a href="penanggulangan.html" class="nav-btn">
+                    <i class="fas fa-hands-helping"></i> Penanggulangan
+                </a>
+                <a href="peta.html" class="nav-btn">
+                    <i class="fas fa-map"></i> Peta
+                </a>
             </div>
         </div>
-        <div class="nav-menu">
-            <button class="nav-btn active" onclick="switchPage('dashboard', event)">
-                <i class="fas fa-home"></i> Dashboard
-            </button>
-            <button class="nav-btn" onclick="switchPage('education', event)">
-                <i class="fa-solid fa-person-walking"></i> Evakuasi
-            </button>
-            <button class="nav-btn" onclick="switchPage('education', event)">
-                <i class="fas fa-book"></i> Edukasi
-            </button>
-            <button class="nav-btn" onclick="switchPage('mitigation', event)">
-                <i class="fas fa-shield-alt"></i> Mitigasi
-            </button>
-            <button class="nav-btn" onclick="switchPage('education', event)">
-                <i class="fas fa-book"></i> Penanggulangan
-            </button>
-            <button class="nav-btn" onclick="switchPage('map', event)">
-                <i class="fas fa-map"></i> Peta
-            </button>
-        </div>
-        <div class="header-info">
-            <div style="text-align: right; display: none;" id="datetime-display">
-                <div style="font-size: 14px; font-weight: 600;" id="datetime"></div>
-                <div style="font-size: 12px; opacity: 0.7;">Sleman, Yogyakarta</div>
+    </div> 
+
+    <!-- LANGKAH EVAKUASI -->
+    <div class="content">
+        <div class="section box-container">
+            <div class="section-title">
+                <i class="fas fa-running"></i> Langkah Evakuasi Saat Tsunami
             </div>
+
+            <div class="alert-box">
+                <h4><i class="fas fa-exclamation-circle"></i> PRIORITAS UTAMA: KESELAMATAN JIWA!</h4>
+                <p>Tsunami dapat datang dalam 5–30 menit setelah gempa. Waktu adalah segalanya!</p>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-list-ol"></i> Langkah-Langkah Evakuasi:</h3>
+            <ol class="evacuation-steps">
+                <li><strong>Tetap Tenang dan Waspada</strong><br><span>Jangan panik! Tetap fokus dan ingat rencana evakuasi.</span></li>
+                <li><strong>Jauhi Pantai Segera</strong><br><span>Jika merasakan gempa kuat atau air laut surut, segera menjauh!</span></li>
+                <li><strong>Menuju Dataran Tinggi</strong><br><span>Segera ke dataran tinggi minimal 10 meter dari permukaan laut.</span></li>
+                <li><strong>Jangan Kembali</strong><br><span>Tsunami bisa datang berkali-kali, jangan ambil risiko.</span></li>
+                <li><strong>Bantu Orang Lain</strong><br><span>Bantu yang membutuhkan, seperti anak-anak dan lansia.</span></li>
+                <li><strong>Tunggu Informasi Resmi</strong><br><span>Dengarkan info dari BMKG/BPBD sebelum kembali.</span></li>
+                <li><strong>Laporkan Kondisi</strong><br><span>Hubungi keluarga dan pos pengungsian untuk memastikan keselamatan.</span></li>
+            </ol>
         </div>
     </div>
-</div>
+
+    <!-- TAS SIAGA BENCANA  -->
+    <div class="content">
+        <div class="section box-container">
+            <div class="section-title">
+                <i class="fas fa-bag-shopping"></i> Tas Siaga Bencana
+            </div>
+
+            <div class="alert-box">
+                <h4><i class="fas fa-exclamation-circle"></i> PRIORITAS UTAMA: BAWA BARANG ANDA SEWAJARNYA!</h4>
+                <p>Siapkan Barang Bawaan Anda Untuk Berjaga-Jaga</p>
+            </div>
+
+            <h3 class="sub-title"><i class="fas fa-list-ol"></i> Berikut Isi Tas Siaga Bencana:</h3>
+            <ol class="evacuation-steps">
+                <li><strong>Dokumen Penting (KTP, KK, Sertifikat)</strong></li>
+                <li><strong>Uang Tunai Secukupnya</strong></li>
+                <li><strong>Obat-Obatan Pribadi</strong></li>
+                <li><strong>Botol Minum Berisi Air</strong></li>
+                <li><strong>Makanan Kaleng / Kering</strong></li>
+                <li><strong>Senter dan Baterai Cadangan</strong></li>
+                <li><strong>Power Bank</strong></li>
+                <li><strong>Pakaian Ganti</strong></li>
+                <li><strong>Jas Hujan / Payung</strong></li>
+                <li><strong>Masker dan Hand-Sanitizer</strong></li>
+                <li><strong>Peluit Darurat</strong></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Sistem Informasi Manajemen Tsunami Indonesia </p>
+        <p style="margin-top: 10px; font-size: 12px;">
+            <i class="fas fa-phone"></i> Hotline Darurat: 119 | 
+            <i class="fas fa-envelope"></i> SIM-B-TSUNAMI@gmail.com |
+        </p>
+        <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">
+            Dibuat untuk keselamatan masyarakat Indonesia
+        </p>
+    </div>
 </body>
+
 <style>
 body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -65,139 +124,108 @@ body {
     top: 0;
     z-index: 1000;
 }
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
+.header-content { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    max-width: 1400px; 
+    margin: 0 auto; 
 }
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
 }
-
-.logo i {
-    font-size: 45px;
-    color: #00d9ff;
-    animation: wave 2s ease-in-out infinite;
+.logo i { 
+    font-size: 35px; 
+    color: #00d9ff; 
+    animation: wave 2s ease-in-out infinite; 
 }
-
-@keyframes wave {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
+@keyframes wave { 
+    0%,100%{transform:rotate(0)}
+    25%{transform:rotate(-5deg)}
+    75%{transform:rotate(5deg)} 
 }
-
-.logo h1 {
-    font-size: 20px;
-    font-weight: 700;
+.logo h1 { 
+    font-size: 20px; 
+    font-weight: 700; 
     margin-top: 0; 
-    padding: 0;
-    line-height: 1;
+    line-height: 1; 
+}
+.logo p { 
+    font-size: 12px; 
+    color: #00d9ff; 
+    margin-bottom: 0.5px; 
+    line-height: 1; 
+}
+.nav-menu { 
+    display: flex; 
+    gap: 10px; 
+}
+.nav-btn { 
+    background: rgba(0,217,255,0.1); 
+    color: #00d9ff; 
+    border: 1px solid #00d9ff; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    transition: .3s; 
+    font-weight: 600; 
+    font-size: 14px; }
+.nav-btn:hover, .nav-btn.active { 
+    background: #00d9ff; 
+    color: #000; 
 }
 
-.logo p {
-    font-size: 12px;
+/* kotak di konten */
+.box-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 217, 255, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px auto;
+    max-width: 900px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.alert-box {
+    background: rgba(255, 56, 56, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #ff3838;
+    margin: 20px 0;
+}
+.alert-box h4 {
+    color: #ff3838;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
     color: #00d9ff;
-    margin-bottom: 0.5px;
-    padding: 0;
-    line-height: 1;
+    margin-bottom: 10px;
 }
 
-.nav-menu {
-    display: flex;
-    gap: 10px;
-}
-
-.nav-btn {
-    background: rgba(0, 217, 255, 0.1);
+.sub-title {
     color: #00d9ff;
-    border: 1px solid #00d9ff;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 600;
+    margin: 20px 0 15px 0;
+}
+
+
+.evacuation-steps {
+    list-style: decimal;
+    padding-left: 25px;
+    line-height: 1.8;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    opacity: 0.7;
     font-size: 14px;
-}
-
-.nav-btn:hover, .nav-btn.active {
-    background: #00d9ff;
-    color: #000;
-}
-
-.header-info {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
-
-/* STATUS BADGE STYLES */
-.status-badge {
-    background: #00ff88;
-    color: #000;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-badge.warning {
-    background: #ffd500;
-}
-
-.status-badge.danger {
-    background: #ff3838;
-    color: #fff;
-    animation: warningPulse 2s ease-in-out infinite;
-}
-
-@keyframes warningPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 56, 56, 0.5); }
-    50% { box-shadow: 0 0 40px rgba(255, 56, 56, 0.8); }
-}
-
-.pulse {
-    width: 10px;
-    height: 10px;
-    background: #000;
-    border-radius: 50%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-/* RESPONSIVENESS NAV BAR ONLY */
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .nav-menu {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .nav-btn {
-        font-size: 12px;
-        padding: 6px 10px;
-    }
-
-    .header-info {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
 }
 </style>
 </html>
