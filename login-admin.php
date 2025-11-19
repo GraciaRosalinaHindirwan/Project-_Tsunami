@@ -3,7 +3,7 @@ session_start();
 include 'koneksi.php';
 
 if (isset($_SESSION['login_user'])) {
-    header("location: home.html");
+    header("location: homeadmin.php");
     exit;
 }
 
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($password == $row['password']) { 
             $_SESSION['login_user'] = $username;
             $_SESSION['nama_lengkap'] = $row['nama_lengkap'];
-            header("location: home.html");
+            header("location: homeadmin.php");
         } else {
             $error = "Password salah!";
         }
