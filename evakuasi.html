@@ -8,37 +8,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-water"></i>
-                <div>
-                    <h1>SIM TSUNAMI</h1>
-                    <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
-                </div>
-            </div>
-            <div class="nav-menu">
-                <a href="home.html" class="nav-btn">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-                <a href="evakuasi.html" class="nav-btn active">
-                    <i class="fas fa-running"></i> Evakuasi
-                </a>
-                <a href="education.html" class="nav-btn"> 
-                    <i class="fas fa-book"></i> Edukasi
-                </a>
-                <a href="mitigasi.html" class="nav-btn">
-                    <i class="fas fa-shield-alt"></i> Mitigasi
-                </a>
-                <a href="penanggulangan.html" class="nav-btn">
-                    <i class="fas fa-hands-helping"></i> Penanggulangan
-                </a>
-                <a href="peta.html" class="nav-btn">
-                    <i class="fas fa-map"></i> Peta
-                </a>
+   <div class="header">
+    <div class="header-content">
+        <div class="logo">
+            <i class="fas fa-water"></i>
+            <div>
+                <h1>SIM TSUNAMI</h1>
+                <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
             </div>
         </div>
-    </div> 
+        <div class="nav-menu">
+            <a href="home.html" class="nav-btn">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="evakuasi.html" class="nav-btn active">
+                <i class="fas fa-running"></i> Evakuasi
+            </a>
+            <a href="education.html" class="nav-btn"> 
+                <i class="fas fa-book"></i> Edukasi
+            </a>
+            <a href="mitigasi.html" class="nav-btn">
+                <i class="fas fa-shield-alt"></i> Mitigasi
+            </a>
+            <a href="penanggulangan.html" class="nav-btn">
+                <i class="fas fa-hands-helping"></i> Penanggulangan
+            </a>
+            <a href="peta.html" class="nav-btn">
+                <i class="fas fa-map"></i> Peta
+            </a>
+</div>
+        <div class="header-info">
+            <div style="text-align: right; display: none;" id="datetime-display">
+                <div style="font-size: 14px; font-weight: 600;" id="datetime"></div>
+                <div style="font-size: 12px; opacity: 0.7;">Sleman, Yogyakarta</div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- LANGKAH EVAKUASI -->
     <div class="content">
@@ -142,9 +148,9 @@ body {
     animation: wave 2s ease-in-out infinite; 
 }
 @keyframes wave { 
-    0%,100%{transform:rotate(0)}
-    25%{transform:rotate(-5deg)}
-    75%{transform:rotate(5deg)} 
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); } 
 }
 .logo h1 { 
     font-size: 20px; 
@@ -156,6 +162,7 @@ body {
     font-size: 12px; 
     color: #00d9ff; 
     margin-bottom: 0.5px; 
+    padding: 0;
     line-height: 1; 
 }
 .nav-menu { 
@@ -168,13 +175,21 @@ body {
     border: 1px solid #00d9ff; 
     padding: 8px 16px; 
     border-radius: 8px; 
+    cursor: pointer;
     text-decoration: none; 
-    transition: .3s; 
+    transition: all 0.3s; 
     font-weight: 600; 
     font-size: 14px; }
+
 .nav-btn:hover, .nav-btn.active { 
     background: #00d9ff; 
     color: #000; 
+}
+
+.header-info {
+    display: flex;
+    gap: 30px;
+    align-items: center;
 }
 
 /* kotak di konten */
@@ -219,6 +234,41 @@ body {
     line-height: 1.8;
 }
 
+/* RESPONSIVENESS NAV BAR ONLY */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-menu {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        background: rgba(0, 217, 255, 0.1);
+        color: #00d9ff;
+        border: 1px solid #00d9ff;
+        padding: 4px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+        font-size: 11px;
+        text-decoration: none;
+    }
+    .nav-btn:hover, .nav-btn.active {
+        background: #00d9ff;
+        color: #000; }
+
+   .header-info {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+}
+
 .footer {
     text-align: center;
     padding: 30px;
@@ -226,6 +276,13 @@ body {
     font-size: 14px;
     background: rgba(0, 0, 0, 0.5); 
     backdrop-filter: blur(5px);
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 20px;
+        font-size: 12px;
+    }
 }
 </style>
 </html>
