@@ -44,7 +44,7 @@ INSERT INTO `admins` (`id`, `username`, `password`, `nama_lengkap`) VALUES
 (3, 'damar', 'damar123', 'Damar Nugroho'),
 (4, 'yefa', 'yefa123', 'Yefa Qihan '),
 (5, 'gracia', 'gracia123', 'Gracia Rosalina Hindirwan'),
-(6, 'okta', 'okta123', 'Oktafiani');
+(6, 'okta', 'okta123', 'Oktafiani Nur Widayati');
 
 -- --------------------------------------------------------
 
