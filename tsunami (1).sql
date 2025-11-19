@@ -39,7 +39,12 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`, `nama_lengkap`) VALUES
-(1, 'admin', 'capt123', 'AY AY CAPTAIN');
+(1, 'admin', 'capt123', 'AY AY CAPTAIN',
+ 2, 'akbar', 'akbar123', 'Akbar Maulana Setiawan',
+ 3, 'damar', 'damar123', 'Damar Nugroho',
+ 4, 'yefa', 'yefa123', 'Yefa Qihan ',
+ 5, 'gracia', 'gracia123', 'Gracia Rosalina Hindirwan',
+ 5, 'okta', 'okta123', 'Oktafiani');
 
 -- --------------------------------------------------------
 
