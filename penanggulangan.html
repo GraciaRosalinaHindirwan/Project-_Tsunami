@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penanggulangan - SIM TSUNAMI</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CSS DARI HOME.HTML (Header & Body Base) --- */
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styling (Persis seperti Home) */
+        .header {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 8px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid #00d9ff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            font-size: 35px;
+            color: #00d9ff;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 0; 
+            padding: 0;
+            line-height: 1;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #00d9ff;
+            margin-bottom: 0.5px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Nav Button Style */
+        .nav-btn {
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            border: 1px solid #00d9ff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block; /* Penting agar tidak berantakan dengan Bootstrap */
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #00d9ff;
+            color: #000;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        /* --- 2. CSS KHUSUS KONTEN PENANGGULANGAN (Grid & Cards) --- */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00d9ff;
+            --accent-green: #00ff88;
+        }
+
+        /* Glassmorphism Card Styling */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Specific Card Borders based on Type */
+        .card-response { border-left: 4px solid #00d9ff; }
+        .card-health { border-left: 4px solid #00d9ff; }
+        .card-rehab { border-left: 4px solid #00d9ff; }
+        .card-rekon { border-left: 4px solid #00d9ff; }
+
+        h3 {
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* List Styling inside cards */
+        .custom-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: start;
+            gap: 10px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .custom-list li:last-child {
+            border-bottom: none;
+        }
+
+        .custom-list li::before {
+            content: '\f111';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 6px;
+            color: var(--accent-cyan);
+            margin-top: 8px;
+        }
+
+        /* Emergency Bar Styling */
+        .emergency-bar {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .emergency-title {
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .emergency-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .emergency-item strong {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* Footer Styling */
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 30px;
+            opacity: 0.7;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(5px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-menu {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .nav-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                flex: 1 0 auto;
+                text-align: center;
+            }
+            .header-info { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-water"></i>
+                <div>
+                    <h1>SIM TSUNAMI</h1>
+                    <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="home.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="evakuasi.html" class="nav-btn">
+                    <i class="fas fa-running"></i> Evakuasi
+                </a>
+                <a href="education.html" class="nav-btn"> 
+                    <i class="fas fa-book"></i> Edukasi
+                </a>
+                <a href="mitigasi.html" class="nav-btn">
+                    <i class="fas fa-shield-alt"></i> Mitigasi
+                </a>
+                <a href="penanggulangan.html" class="nav-btn active">
+                    <i class="fas fa-hands-helping"></i> Penanggulangan
+                </a>
+                <a href="peta.html" class="nav-btn">
+                    <i class="fas fa-map"></i> Peta
+                </a>
+            </div>
+            <div class="header-info">
+                <div style="text-align: right; display: none;" id="datetime-display">
+                    <div style="font-size: 14px; font-weight: 600;" id="datetime"></div>
+                    <div style="font-size: 12px; opacity: 0.7;">Sleman, Yogyakarta</div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="container-xl py-5">
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="text-white mb-3"><i class="fas fa-hands-helping me-2"></i> Penanggulangan</h2>
+                <p class="text-white-50" style="max-width: 800px;">
+                    Tahapan penanggulangan bencana setelah tsunami terjadi difokuskan pada penyelamatan korban, pemulihan layanan dasar, hingga pembangunan kembali wilayah terdampak agar lebih tangguh di masa depan.
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="glass-card card-response">
+                    <h3><i class="fas fa-user-injured"></i> Tanggap Darurat</h3>
+                    <ul class="custom-list">
+                        <li>Evakuasi korban luka</li>
+                        <li>Pencarian korban hilang (SAR)</li>
+                        <li>Pendirian posko kesehatan</li>
+                        <li>Distribusi bantuan darurat</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="glass-card card-health">
+                    <h3><i class="fas fa-clinic-medical"></i> Layanan Kesehatan</h3>
+                    <ul class="custom-list">
+                        <li>Trauma healing korban</li>
+                        <li>Pencegahan wabah penyakit</li>
+                        <li>Sanitasi lingkungan</li>
+                        <li>Gizi untuk pengungsi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="glass-card card-rehab">
+                    <h3><i class="fas fa-home"></i> Rehabilitasi</h3>
+                    <ul class="custom-list">
+                        <li>Pembangunan hunian sementara</li>
+                        <li>Perbaikan infrastruktur</li>
+                        <li>Pemulihan ekonomi lokal</li>
+                        <li>Bantuan modal usaha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="glass-card card-rekon">
+                    <h3><i class="fas fa-hammer"></i> Rekonstruksi</h3>
+                    <ul class="custom-list">
+                        <li>Pembangunan kembali permanen</li>
+                        <li>Tata ruang yang lebih aman</li>
+                        <li>Infrastruktur tahan bencana</li>
+                        <li>Sistem peringatan dini</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="emergency-bar">
+                    <h4 class="emergency-title">
+                        <i class="fas fa-info-circle me-2"></i> Nomor Darurat Penting:
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4 col-lg-2 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>119</strong> - SAR Nasional</span>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>110</strong> - Polisi</span>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-3 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>113</strong> - Pemadam Kebakaran</span>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>118</strong> - Ambulans</span>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-3 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>129</strong> - Posko Bencana</span>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 emergency-item">
+                            <i class="fas fa-phone text-white"></i>
+                            <span><strong>021-6546315</strong> - BMKG</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Sistem Informasi Manajemen Tsunami Indonesia</p>
+        <p style="margin-top: 10px; font-size: 12px;">
+            <i class="fas fa-phone"></i> Hotline Darurat: 119 | 
+            <i class="fas fa-envelope"></i> SIM-B-TSUNAMI@gmail.com
+        </p>
+        <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">
+            Dibuat untuk keselamatan masyarakat Indonesia
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
