@@ -594,35 +594,6 @@ $total_admin = $data_count['total'];
             }
         }
 
-        // 6. FETCH DATA TABEL (M 5.0+)
-        // async function fetchTableData() {
-        //     try {
-        //         const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'gempaterkini.json'));
-        //         const data = await response.json();
-        //         const listGempa = data.Infogempa.gempa;
-
-        //         // Update Total Gempa di Kartu Statistik
-        //         document.getElementById('total-gempa').innerText = listGempa.length;
-
-        //         let html = '';
-        //         // Ambil 10 data saja
-        //         listGempa.slice(0, 10).forEach(g => {
-        //             html += `
-        //                 <tr>
-        //                     <td>${g.Tanggal}<br><small>${g.Jam}</small></td>
-        //                     <td style="color: #00ff88; font-weight:bold;">${g.Magnitude}</td>
-        //                     <td>${g.Kedalaman}</td>
-        //                     <td>${g.Wilayah}</td>
-        //                     <td>${g.Potensi}</td>
-        //                 </tr>
-        //             `;
-        //         });
-        //         document.getElementById('earthquake-data').innerHTML = html;
-        //     } catch (e) {
-        //         console.error(e);
-        //     }
-        // }
-
         // 7. FETCH GEMPA DIRASAKAN
         async function fetchFelt() {
             try {
@@ -649,7 +620,6 @@ $total_admin = $data_count['total'];
             }
         }
 
-        // Jalankan Fetch saat load
         fetchLatestEarthquake();
         fetchTableData();
         fetchFelt();
