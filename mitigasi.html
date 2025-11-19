@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM TSUNAMI - Sistem Informasi Manajemen Tsunami Indonesia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<script>
+    //konten mitigasi 
+    // ACCORDION FUNCTION
+function toggleAccordion(header) {
+    const content = header.nextElementSibling;
+    const isOpen = header.classList.contains("active");
+
+    // Close all
+    document.querySelectorAll(".accordion-header").forEach(h => h.classList.remove("active"));
+    document.querySelectorAll(".accordion-content").forEach(c => c.classList.remove("active"));
+
+    // Open if previously closed
+    if (!isOpen) {
+        header.classList.add("active");
+        content.classList.add("active");
+    }
+}
+
+</script>
+<body>
+    <div class="header">
+    <div class="header-content">
+        <div class="logo">
+            <i class="fas fa-water"></i>
+            <div>
+                <h1>SIM TSUNAMI</h1>
+                <p>Sistem Informasi Manajemen Tsunami Indonesia</p>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <a href="home.html" class="nav-btn">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="evakuasi.html" class="nav-btn">
+                <i class="fas fa-running"></i> Evakuasi
+            </a>
+            <a href="education.html" class="nav-btn"> 
+                <i class="fas fa-book"></i> Edukasi
+            </a>
+            <a href="mitigasi.html" class="nav-btn active">
+                <i class="fas fa-shield-alt"></i> Mitigasi
+            </a>
+            <a href="penanggulangan.html" class="nav-btn">
+                <i class="fas fa-hands-helping"></i> Penanggulangan
+            </a>
+            <a href="peta.html" class="nav-btn">
+                <i class="fas fa-map"></i> Peta
+            </a>
+    </div>
+        <div class="header-info">
+            <div style="text-align: right; display: none;" id="datetime-display">
+                <div style="font-size: 14px; font-weight: 600;" id="datetime"></div>
+                <div style="font-size: 12px; opacity: 0.7;">Sleman, Yogyakarta</div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<!-- MITIGATION PAGE -->
+<div id="mitigation-page" class="page-section">
+    <div class="panel">
+        <h2><i class="fas fa-shield-alt"></i> Mitigasi dan Penanggulangan Tsunami</h2>
+
+        <!-- ACCORDION 1 -->
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span><i class="fas fa-hard-hat"></i> Mitigasi Struktural</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+                <p style="line-height: 1.8; margin-bottom: 20px;">
+                    Mitigasi struktural adalah upaya pengurangan risiko bencana melalui pembangunan infrastruktur fisik.
+                </p>
+
+                <div class="content-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-water"></i> Pemecah Gelombang</h3>
+                        <p>Struktur beton atau batu di lepas pantai untuk meredam energi gelombang.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-tree"></i> Sabuk Hijau Pantai</h3>
+                        <p>Penanaman mangrove dan pohon pantai untuk memperlambat gelombang tsunami.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-building"></i> Bangunan Tahan Tsunami</h3>
+                        <p>Desain struktur yang mampu menahan guncangan dan hantaman gelombang besar.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-road"></i> Jalur Evakuasi</h3>
+                        <p>Pembuatan jalur menuju dataran tinggi lengkap dengan rambu dan peta evakuasi.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-warehouse"></i> Shelter Evakuasi Vertikal</h3>
+                        <p>Bangunan tinggi untuk evakuasi masyarakat saat tsunami.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-broadcast-tower"></i> Sistem Peringatan Dini</h3>
+                        <p>Sensor tsunami, buoy, dan sirine yang terhubung ke pusat pengendali.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCORDION 2 -->
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span><i class="fas fa-book-reader"></i> Mitigasi Non-Struktural</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content">
+                <div class="content-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-chalkboard-teacher"></i> Edukasi Masyarakat</h3>
+                        <ul>
+                            <li>Sosialisasi bahaya tsunami</li>
+                            <li>Pelatihan evakuasi</li>
+                            <li>Simulasi bencana</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-map"></i> Pemetaan Risiko</h3>
+                        <ul>
+                            <li>Pemetaan zona rawan</li>
+                            <li>Peta jalur evakuasi</li>
+                            <li>Zonasi ruang pantai</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-gavel"></i> Regulasi dan Kebijakan</h3>
+                        <ul>
+                            <li>Bangunan tahan gempa</li>
+                            <li>Larangan zona merah</li>
+                            <li>Prosedur tanggap darurat</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-users-cog"></i> Pembentukan Tim Siaga</h3>
+                        <ul>
+                            <li>Relawan desa siaga</li>
+                            <li>Koordinasi BPBD</li>
+                            <li>Pelatihan SAR</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-mobile-alt"></i> Sistem Informasi</h3>
+                        <ul>
+                            <li>Aplikasi peringatan dini</li>
+                            <li>SMS Broadcast</li>
+                            <li>Update informasi via media sosial</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-first-aid"></i> Persiapan Logistik</h3>
+                        <ul>
+                            <li>Stok makanan dan obat</li>
+                            <li>Tas siaga (Go-Bag)</li>
+                            <li>Gudang logistik</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Sistem Informasi Manajemen Tsunami Indonesia </p>
+    <p style="margin-top: 10px; font-size: 12px;">
+        <i class="fas fa-phone"></i> Hotline Darurat: 119 | 
+        <i class="fas fa-envelope"></i> SIM-B-TSUNAMI@gmail.com |
+    </p>
+    <p style="margin-top: 10px; font-size: 11px; opacity: 0.6;">
+        Dibuat untuk keselamatan masyarakat Indonesia
+    </p>
+</div>
+
+</body>
+<style>
+body {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    color: #fff;
+    min-height: 100vh;
+}
+
+
+.header {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 8px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #00d9ff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo i {
+    font-size: 35px;
+    color: #00d9ff;
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+.logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 0; 
+    padding: 0;
+    line-height: 1;
+}
+
+.logo p {
+    font-size: 12px;
+    color: #00d9ff;
+    margin-bottom: 0.5px;
+    padding: 0;
+    line-height: 1;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    background: rgba(0, 217, 255, 0.1);
+    color: #00d9ff;
+    border: 1px solid #00d9ff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background: #00d9ff;
+    color: #000;
+}
+
+.header-info {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+/* STATUS BADGE STYLES */
+.status-badge {
+    background: #00ff88;
+    color: #000;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-badge.warning {
+    background: #ffd500;
+}
+
+.status-badge.danger {
+    background: #ff3838;
+    color: #fff;
+    animation: warningPulse 2s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 56, 56, 0.5); }
+    50% { box-shadow: 0 0 40px rgba(255, 56, 56, 0.8); }
+}
+
+.pulse {
+    width: 10px;
+    height: 10px;
+    background: #000;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* RESPONSIVENESS NAV BAR ONLY */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-menu {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-btn { 
+        background: rgba(0, 217, 255, 0.1); 
+        color: #00d9ff; 
+        border: 1px solid #00d9ff; 
+        padding: 4px 10px; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        transition: all 0.3s; 
+        font-weight: 600; 
+        font-size: 11px; 
+        text-decoration: none; 
+    }
+    .nav-btn:hover, .nav-btn.active { 
+        background: #00d9ff; 
+        color: #000; }
+
+   .header-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+}
+
+/*stying content mitigasi*/
+/* WARNA BIRU UNTUK JUDUL PANEL DI HALAMAN MITIGASI */
+#mitigation-page h2 {
+    color: #00d9ff !important;
+}
+
+/* WARNA BIRU UNTUK JUDUL KARTU INFO DI HALAMAN MITIGASI */
+#mitigation-page .info-card h3 {
+    color: #00d9ff !important;
+}
+
+/* ================================
+   MITIGATION PAGE ONLY
+   ================================ */
+
+/* Panel utama pada Mitigation Page */
+#mitigation-page .panel {
+    background: #0f2027;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+}
+
+/* Accordion pada Mitigation Page */
+#mitigation-page .accordion {
+    margin-bottom: 15px;
+}
+
+#mitigation-page .accordion-header {
+    background: rgba(0, 217, 255, 0.15);
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+#mitigation-page .accordion-header:hover {
+    background: rgba(0, 217, 255, 0.25);
+}
+
+#mitigation-page .accordion-header.active {
+    background: rgba(0, 217, 255, 0.35);
+    border-radius: 10px 10px 0 0;
+}
+
+#mitigation-page .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0 0 10px 10px;
+    transition: max-height 0.3s ease;
+}
+
+#mitigation-page .accordion-content.active {
+    max-height: 2000px;
+    padding: 20px;
+}
+
+/* Grid pada konten mitigasi */
+#mitigation-page .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+}
+
+/* Card informasi */
+#mitigation-page .info-card {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 4px solid #00d9ff;
+}
+
+#mitigation-page .info-card h3 {
+    color: #00d9ff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#mitigation-page .info-card p {
+    opacity: 0.9;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+#mitigation-page .info-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+#mitigation-page .info-card li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+#mitigation-page .info-card li:last-child {
+    border-bottom: none;
+}
+
+#mitigation-page .info-card li i {
+    margin-top: 4px;
+    font-size: 8px;
+    color: #00d9ff;
+}
+
+
+
+/* Styling untuk Footer */
+
+.page-section {
+    flex: 1;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    opacity: 0.7;
+    margin-top: auto;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+}
+
+/* Penyesuaian Responsif (Opsional, tapi disarankan) */
+@media (max-width: 768px) {
+    .footer {
+        padding: 20px;
+        font-size: 12px;
+    }
+}
+</style>
+</html>
