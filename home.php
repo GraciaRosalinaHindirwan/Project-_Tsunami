@@ -3,6 +3,21 @@
 session_start();
 include 'koneksi.php';
 
+// Mengambil data Magnitudo gempa paling terakhir untuk Stat Card atas
+// --- GANTI BAGIAN INI (Baris 7-11) ---
+
+// Menghitung JUMLAH gempa yang terjadi dalam 2 JAM TERAKHIR dari waktu sekarang
+$query_stat = mysqli_query($conn, "SELECT COUNT(*) as total FROM data_gempa WHERE tanggal_jam >= DATE_SUB(NOW(), INTERVAL 2 HOUR)");
+$data_stat  = mysqli_fetch_assoc($query_stat);
+
+// Simpan jumlahnya ke variabel
+$jumlah_gempa_baru = isset($data_stat['total']) ? $data_stat['total'] : 0;
+
+// -------------------------------------
+
+// Jika ada data, ambil magnitudonya. Jika kosong, tampilkan strip (-)
+$magnitudo_terkini = isset($data_stat['magnitude']) ? $data_stat['magnitude'] : "-";
+
 // 2. Cek Keamanan: Jika belum login, tendang ke login page
 if (!isset($_SESSION['login_user'])) {
     header("location: login-admin.php");
@@ -390,9 +405,9 @@ $total_admin = $data_count['total'];
         <div id="dashboard-page" class="page-section active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <i class="fas fa-exclamation-triangle" style="color: #ffd500;"></i>
+                    <i class="fas fa-history" style="color: #ffd500;"></i>
                     <h3>Gempa Terkini</h3>
-                    <div class="value" id="total-gempa">...</div>
+                    <div class="value"><?php echo $jumlah_gempa_baru; ?></div>
                     <div class="change">Live Data BMKG</div>
                 </div>
                 <div class="stat-card">
@@ -412,16 +427,112 @@ $total_admin = $data_count['total'];
             <div class="main-grid">
                 <div class="panel">
                     <h2><i class="fas fa-earthquake"></i> Gempa Terkini (Real-time)</h2>
-                    <div id="latest-earthquake" style="text-align: center; padding: 20px;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 30px;"></i> Memuat data...
+                    <div class="panel">
+                        <h2><i class="fas fa-earthquake"></i> Gempa Terkini (Real-time)</h2>
+
+                        <?php
+                        // Ambil 1 data gempa paling baru berdasarkan waktu
+                        $q_latest = mysqli_query($conn, "SELECT * FROM data_gempa ORDER BY tanggal_jam DESC LIMIT 1");
+                        $latest = mysqli_fetch_assoc($q_latest);
+
+                        if ($latest) {
+                            // Logika untuk Potensi: Jika "-", ubah teksnya agar lebih informatif
+                            $potensi_text = $latest['potensi'];
+                            if ($potensi_text == '-' || $potensi_text == '') {
+                                // Jika magnitude kecil (< 5.0), biasanya memang tidak berpotensi
+                                if ($latest['magnitude'] < 5.0) {
+                                    $potensi_text = "Tidak Berpotensi Tsunami (Gempa Kecil)";
+                                } else {
+                                    $potensi_text = "Menunggu Pemutakhiran BMKG";
+                                }
+                            }
+
+                            // URL Gambar Shakemap
+                            $img_url = "https://data.bmkg.go.id/DataMKG/TEWS/" . $latest['shakemap'];
+                        ?>
+
+                            <div id="latest-earthquake" style="text-align: center; padding: 10px;">
+                                <h1 style="color: #00d9ff; font-size: 50px; margin: 0; font-weight:800;">
+                                    M <?php echo $latest['magnitude']; ?>
+                                </h1>
+
+                                <h3 style="margin: 10px 0; font-size:18px; color: #fff;">
+                                    <i class="fas fa-map-marker-alt"></i> <?php echo $latest['wilayah']; ?>
+                                </h3>
+
+                                <p style="opacity: 0.8; margin-bottom:15px;">
+                                    <i class="fas fa-clock"></i> <?php echo $latest['tanggal_text'] . ' - ' . $latest['jam_text']; ?>
+                                </p>
+
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(0, 217, 255, 0.1); border: 1px solid #00d9ff; border-radius: 8px;">
+                                    <strong style="color: #00d9ff;">STATUS POTENSI:</strong><br>
+                                    <span style="font-size: 16px; font-weight:bold;">
+                                        <?php echo $potensi_text; ?>
+                                    </span>
+                                </div>
+
+                                <?php if (!empty($latest['shakemap'])) { ?>
+                                    <div style="margin-top: 20px; border-radius: 10px; overflow: hidden; border:1px solid rgba(255,255,255,0.2);">
+                                        <p style="text-align:left; padding:5px 10px; background:rgba(0,0,0,0.5); font-size:12px;">Peta Guncangan (Shakemap):</p>
+                                        <img src="<?php echo $img_url; ?>" alt="Shakemap Gempa" style="width:100%; display:block;" onerror="this.style.display='none'">
+                                    </div>
+                                <?php } ?>
+                            </div>
+
+                        <?php } else { ?>
+                            <div style="text-align: center; padding: 40px;">
+                                <i class="fas fa-cloud-download-alt" style="font-size: 40px; color: #ffd500; margin-bottom:15px;"></i>
+                                <h3>Data Belum Tersedia</h3>
+                                <p>Silakan klik tombol <b>"Ambil Data BMKG Terbaru"</b> di bawah.</p>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div id="shakemap-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden;"></div>
                 </div>
 
                 <div class="panel">
                     <h2><i class="fas fa-bell"></i> Gempa Dirasakan</h2>
-                    <div id="felt-earthquakes" style="max-height: 400px; overflow-y: auto;">
-                        <p style="opacity: 0.5; text-align: center;">Memuat data...</p>
+                    <div class="panel">
+                        <h2><i class="fas fa-bell"></i> Gempa Dirasakan</h2>
+
+                        <div id="felt-earthquakes" style="max-height: 400px; overflow-y: auto; padding-right:5px;">
+                            <?php
+                            // Query: Ambil data yang kolom 'dirasakan' TIDAK kosong dan TIDAK '-'
+                            $q_felt = mysqli_query($conn, "SELECT * FROM data_gempa 
+                                       WHERE dirasakan != '-' 
+                                       AND dirasakan IS NOT NULL 
+                                       ORDER BY tanggal_jam DESC LIMIT 10");
+
+                            if (mysqli_num_rows($q_felt) > 0) {
+                                while ($gf = mysqli_fetch_assoc($q_felt)) {
+                                    // Tentukan warna alert berdasarkan magnitude
+                                    $mag = (float)$gf['magnitude'];
+                                    $alert_class = ($mag >= 5.0) ? 'danger' : 'warning'; // Merah jika >= 5, Kuning jika < 5
+                            ?>
+
+                                    <div class="alert-item <?php echo $alert_class; ?>" style="margin-bottom: 10px; border-left: 4px solid #ffd500; background: rgba(255,255,255,0.05); padding:10px; border-radius:5px;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                            <strong style="color: #ffd500;">M <?php echo $gf['magnitude']; ?></strong>
+                                            <small style="opacity:0.7;"><?php echo $gf['jam_text']; ?></small>
+                                        </div>
+                                        <div style="font-size: 13px; margin-bottom: 5px; font-weight:600;">
+                                            <?php echo $gf['wilayah']; ?>
+                                        </div>
+                                        <div style="font-size: 11px; opacity: 0.8; font-style:italic;">
+                                            <i class="fas fa-house-damage"></i> Dirasakan: <?php echo $gf['dirasakan']; ?>
+                                        </div>
+                                        <div style="font-size: 10px; opacity: 0.5; margin-top:5px; text-align:right;">
+                                            <?php echo $gf['tanggal_text']; ?>
+                                        </div>
+                                    </div>
+
+                            <?php
+                                }
+                            } else {
+                                echo "<p style='text-align:center; opacity:0.6; padding:20px;'>Belum ada data gempa dirasakan.<br>Klik tombol 'Ambil Data BMKG' di atas.</p>";
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -444,21 +555,35 @@ $total_admin = $data_count['total'];
                         </thead>
                         <tbody id="earthquake-data">
                             <?php
-                            // Ambil data dari database lokal, urutkan dari yang terbaru
                             $query_gempa = mysqli_query($conn, "SELECT * FROM data_gempa ORDER BY tanggal_jam DESC LIMIT 10");
 
                             if (mysqli_num_rows($query_gempa) > 0) {
                                 while ($row = mysqli_fetch_assoc($query_gempa)) {
+                                    // Logika Perbaikan Tampilan Potensi
+                                    $potensi_tabel = $row['potensi'];
+                                    $warna_potensi = "#fff"; // Default putih
+
+                                    if ($potensi_tabel == '-' || $potensi_tabel == '') {
+                                        // Jika kosong/strip, ganti teksnya
+                                        $potensi_tabel = "<span style='opacity:0.5; font-style:italic;'>Tidak ada info</span>";
+                                    } elseif (stripos($potensi_tabel, 'tidak berpotensi') !== false) {
+                                        // Jika aman, warna hijau
+                                        $warna_potensi = "#00ff88";
+                                    } elseif (stripos($potensi_tabel, 'potensi tsunami') !== false) {
+                                        // Jika bahaya, warna merah
+                                        $warna_potensi = "#ff3838";
+                                    }
+
                                     echo "<tr>";
                                     echo "<td>" . $row['tanggal_text'] . "<br><small>" . $row['jam_text'] . "</small></td>";
-                                    echo "<td><strong>" . $row['magnitude'] . "</strong></td>";
+                                    echo "<td><strong style='color: #ffd500;'>M " . $row['magnitude'] . "</strong></td>";
                                     echo "<td>" . $row['kedalaman'] . "</td>";
                                     echo "<td>" . $row['wilayah'] . "</td>";
-                                    echo "<td>" . $row['potensi'] . "</td>";
+                                    echo "<td style='color: $warna_potensi;'>" . $potensi_tabel . "</td>";
                                     echo "</tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='5' style='text-align:center; padding:20px;'>Belum ada data. Silakan klik tombol 'Ambil Data BMKG Terbaru'.</td></tr>";
+                                echo "<tr><td colspan='5' style='text-align:center; padding:20px;'>Database kosong. Klik tombol sinkronisasi.</td></tr>";
                             }
                             ?>
                         </tbody>
@@ -594,6 +719,7 @@ $total_admin = $data_count['total'];
             }
         }
 
+
         // 7. FETCH GEMPA DIRASAKAN
         async function fetchFelt() {
             try {
@@ -620,6 +746,7 @@ $total_admin = $data_count['total'];
             }
         }
 
+        // Jalankan Fetch saat load
         fetchLatestEarthquake();
         fetchTableData();
         fetchFelt();
