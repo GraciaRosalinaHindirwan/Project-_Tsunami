@@ -387,6 +387,16 @@ body {
 }
 
 /* Accordion pada Mitigation Page */
+/* Rotate icon accordion saat aktif */
+#mitigation-page .accordion-header i.fas.fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+#mitigation-page .accordion-header.active i.fas.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+
 #mitigation-page .accordion {
     margin-bottom: 15px;
 }
