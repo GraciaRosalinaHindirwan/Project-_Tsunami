@@ -48,15 +48,30 @@
 </div> 
 
 <div id="map-page" class="page-section active">
-    <div class="panel">
-        <h2><i class="fas fa-map-marked-alt"></i> Peta Interaktif Zona Rawan Tsunami</h2>
-        <div class="map-info-box">
-    <i class="fas fa-info-circle"></i>
-    <span>
-        Data zona rawan tsunami disusun berdasarkan sejarah tsunami besar Indonesia, 
-        analisis BMKG, serta tingkat kerentanan wilayah pesisir.
-    </span>
-</div>
+<div class="map-header-info">
+                <i class="fas fa-map map-icon-large"></i>
+                <h2 class="map-title">Peta Zona Rawan Tsunami Indonesia</h2>
+                <p class="map-desc">
+                    Peta ini menampilkan zona rawan tsunami berdasarkan data historis dan analisis risiko dari BMKG dan BNPB. 
+                    Wilayah berwarna merah memiliki risiko tertinggi.
+                </p>
+                
+                <div class="legend-row">
+                    <div class="legend-item">
+                        <span class="legend-box" style="background: #ff3838;"></span> Risiko Tinggi
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box" style="background: #ffd500;"></span> Risiko Sedang
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box" style="background: #00ff88;"></span> Risiko Rendah
+                    </div>
+                </div>
+
+                <a href="https://magma.esdm.go.id/" target="_blank" class="btn-map-cyan">
+                    <i class="fas fa-expand"></i> Buka Peta Lengkap
+                </a>
+            </div>
 
 
     <!-- 4 INFO CARDS -->
@@ -64,7 +79,7 @@
 
         <!-- RISIKO TINGGI -->
         <div class="info-card">
-            <h3><i class="fas fa-radiation"></i> Wilayah Risiko Tinggi</h3>
+            <h3><i class="fas fa-exclamation-circle"></i> Wilayah Risiko Tinggi</h3>
             <ul>
                 <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Pantai Barat Sumatra</li>
                 <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Pantai Selatan Jawa</li>
@@ -87,7 +102,7 @@
 
         <!-- RISIKO RENDAH -->
         <div class="info-card">
-            <h3><i class="fas fa-info-circle"></i> Wilayah Risiko Rendah</h3>
+            <h3><i class="fas fa-exclamation-circle"></i> Wilayah Risiko Rendah</h3>
             <ul>
                 <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> Pantai Selatan Kalimantan</li>
                 <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> Sebagian Maluku Utara</li>
@@ -238,6 +253,113 @@ body {
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
+}
+
+/* --- CSS TAMBAHAN UNTUK HEADER PETA --- */
+
+/* Container Utama Header Peta */
+.map-header-info {
+    text-align: center; /* <--- INI YANG MEMBUAT TULISAN KE TENGAH */
+    padding: 40px 20px;
+    margin-bottom: 20px;
+    display: flex;           /* Menggunakan Flexbox untuk kontrol posisi lebih baik */
+    flex-direction: column;  /* Menyusun elemen secara vertikal (atas ke bawah) */
+    align-items: center;     /* Memastikan semua elemen (kotak, tombol) tepat di tengah */
+}
+
+/* Ikon Peta Besar */
+.map-icon-large {
+    font-size: 60px;
+    color: #fff;
+    opacity: 0.3; /* Membuat ikon agak transparan */
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+/* Judul Peta */
+.map-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 15px;
+    text-align: center; /* Penegasan agar judul pasti rata tengah */
+}
+
+/* Deskripsi Peta */
+.map-desc {
+    max-width: 700px;
+    margin: 0 auto 30px auto; /* margin auto kiri-kanan menjaga blok teks tetap di tengah */
+    text-align: center;       /* Meratakan teks deskripsi di tengah */
+    opacity: 0.8;
+    line-height: 1.6;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* Container Legenda (Baris Warna) */
+.legend-row {
+    display: flex;
+    justify-content: center; /* Rata tengah horizontal */
+    flex-wrap: wrap; /* Agar turun ke bawah jika layar kecil */
+    gap: 25px; /* Jarak antar item legenda */
+    margin-bottom: 35px;
+}
+
+/* Item Legenda Individual */
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* Kotak Warna Kecil */
+.legend-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Tombol Cyan (Buka Peta Lengkap) */
+.btn-map-cyan {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #00d9ff; /* Warna Cyan Khas */
+    color: #001f2b; /* Warna Teks Gelap */
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+}
+
+.btn-map-cyan:hover {
+    background: #00b8d4;
+    transform: translateY(-3px); /* Efek naik sedikit saat di-hover */
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
+    color: #000;
+}
+
+/* Responsif untuk Layar Kecil (HP) */
+@media (max-width: 768px) {
+    .map-header-info {
+        padding: 30px 15px;
+    }
+    .map-title {
+        font-size: 20px;
+    }
+    .legend-row {
+        gap: 15px;
+        flex-direction: column; /* Susun ke bawah di HP */
+        align-items: center;
+    }
 }
 
 /* RESPONSIVENESS NAV BAR ONLY */
