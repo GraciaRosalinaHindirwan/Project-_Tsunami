@@ -3,21 +3,6 @@
 session_start();
 include 'koneksi.php';
 
-// Mengambil data Magnitudo gempa paling terakhir untuk Stat Card atas
-// --- GANTI BAGIAN INI (Baris 7-11) ---
-
-// Menghitung JUMLAH gempa yang terjadi dalam 2 JAM TERAKHIR dari waktu sekarang
-$query_stat = mysqli_query($conn, "SELECT COUNT(*) as total FROM data_gempa WHERE tanggal_jam >= DATE_SUB(NOW(), INTERVAL 2 HOUR)");
-$data_stat  = mysqli_fetch_assoc($query_stat);
-
-// Simpan jumlahnya ke variabel
-$jumlah_gempa_baru = isset($data_stat['total']) ? $data_stat['total'] : 0;
-
-// -------------------------------------
-
-// Jika ada data, ambil magnitudonya. Jika kosong, tampilkan strip (-)
-$magnitudo_terkini = isset($data_stat['magnitude']) ? $data_stat['magnitude'] : "-";
-
 // 2. Cek Keamanan: Jika belum login, tendang ke login page
 if (!isset($_SESSION['login_user'])) {
     header("location: login-admin.php");
@@ -32,6 +17,14 @@ $nama_lengkap   = $_SESSION['nama_lengkap'];
 $query_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM admins");
 $data_count  = mysqli_fetch_assoc($query_count);
 $total_admin = $data_count['total'];
+
+if (isset($_POST['simpan'])) {
+    $nama = $_POST['nama'];
+    $kategori = $_POST['kategori'];
+
+    mysqli_query($conn, "INSERT INTO wilayah_resiko (nama_wilayah, kategori) VALUES ('$nama', '$kategori')");
+    header("Location: petaadmin.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -420,17 +413,6 @@ $total_admin = $data_count['total'];
         </button>
     </form>
 </div>
-
-<?php
-if (isset($_POST['simpan'])) {
-    include 'koneksi.php';
-    $nama = $_POST['nama'];
-    $kategori = $_POST['kategori'];
-
-    mysqli_query($conn, "INSERT INTO wilayah_resiko (nama_wilayah, kategori) VALUES ('$nama', '$kategori')");
-    header("Location: manage_wilayah.php");
-}
-?>
     <div class="container">                 
     <div class="footer">
         <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
