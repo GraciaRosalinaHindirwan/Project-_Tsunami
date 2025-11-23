@@ -309,18 +309,64 @@ $total_admin = $data_count['total'];
         font-size: 20px;
     }
 }
+/* --- FIX KONTRAS DROPDOWN --- */
+#kategori {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding-right: 28px; /* dulu kebesaran */
+    
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' width='18' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* <<< geser arrow ke kiri */
+    background-size: 16px;
+}
+
+/* Warna background list dropdown */
+#kategori option {
+    background: #0b1e26 !important; /* navy gelap */
+    color: #ffffff !important;      /* teks putih */
+    font-weight: 600;
+}
+
+/* Hover lebih jelas */
+#kategori option:hover {
+    background: #00d9ff !important;
+    color: #000 !important;
+}
+#kategori option[value="tinggi"] {
+    color: #ff3838;
+    font-weight: 600;
+}
+#kategori option[value="sedang"] {
+    color: #ffd500;
+    font-weight: 600;
+}
+#kategori option[value="rendah"] {
+    color: #00ff88;
+    font-weight: 600;
+}
+#kategori {
+    border-left: 8px solid transparent;
+    transition: .25s;
+    padding-left: 12px;
+}
 </style>
 </head>
 <script>
-document.querySelector("input[name='nama']").focus();
-document.querySelector(".form-box").addEventListener("submit", function(e) {
-    const input = document.querySelector("input[name='nama']").value.trim();
-    if (input.length < 3) {
-        alert("Nama wilayah terlalu pendek!");
-        e.preventDefault();
-    }
+    $("#kategori").on("change", function(){
+    const val = $(this).val();
+    let warna = "#fff";
+
+    if(val === "tinggi") warna = "#ff3838";
+    if(val === "sedang") warna = "#e6b800";
+    if(val === "rendah") warna = "#00c96b";
+
+    $(this).css("border-left", `8px solid ${warna}`);
 });
 </script>
+
 <body>
 
     <div class="header">
@@ -361,11 +407,12 @@ document.querySelector(".form-box").addEventListener("submit", function(e) {
         <label>Nama Wilayah</label>
         <input type="text" name="nama" placeholder="Masukkan nama wilayah..." required>
 
-        <label>Kategori Risiko</label>
-        <select name="kategori" required>
-            <option value="tinggi">Risiko Tinggi</option>
-            <option value="sedang">Risiko Sedang</option>
-            <option value="rendah">Risiko Rendah</option>
+       <label>Kategori Risiko</label>
+        <select name="kategori" id="kategori" required>
+            <option value="" selected disabled>Pilih kategori...</option>
+            <option value="tinggi" data-color="#ff3838">🔴 Risiko Tinggi</option>
+            <option value="sedang" data-color="#ffd500">🟡 Risiko Sedang</option>
+            <option value="rendah" data-color="#00ff88">🟢 Risiko Rendah</option>
         </select>
 
         <button type="submit" name="simpan" class="btn-submit">
