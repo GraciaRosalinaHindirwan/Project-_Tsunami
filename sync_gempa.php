@@ -92,5 +92,5 @@ $total_masuk += simpanGempa($conn, "https://data.bmkg.go.id/DataMKG/TEWS/gempadi
 $total_masuk += simpanGempa($conn, "https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json");
 
 // Redirect kembali ke dashboard/home dengan pesan sukses
-header("Location: home.php?status=success&new=$total_masuk");
+header("Location: homeadmin.php?status=success&new=$total_masuk");
 ?>
