@@ -405,8 +405,8 @@ $wilayah = mysqli_query($conn, "SELECT * FROM wilayah_resiko ORDER BY kategori, 
                 <td><?= $w['nama_wilayah']; ?></td>
                 <td><span class="badge <?= $w['kategori']; ?>"><?= ucfirst($w['kategori']); ?></span></td>
                 <td>
-                    <a href="edit_wilayah.php?id=<?= $w['id']; ?>" class="btn-edit">Edit</a>
-                    <a href="hapus_wilayah.php?id=<?= $w['id']; ?>" class="btn-delete" onclick="return konfirmasiHapus('<?= $w['nama_wilayah']; ?>')">Hapus</a>
+                    <a href="edit-wilayah.php?id=<?= $w['id']; ?>" class="btn-edit">Edit</a>
+                    <a href="hapus-wilayah.php?id=<?= $w['id']; ?>" class="btn-delete" onclick="return konfirmasiHapus('<?= $w['nama_wilayah']; ?>')">Hapus</a>
                 </td>
             </tr>
             <?php endwhile; ?>
