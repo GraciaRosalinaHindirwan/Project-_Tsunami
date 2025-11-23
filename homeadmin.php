@@ -32,6 +32,27 @@ $nama_lengkap   = $_SESSION['nama_lengkap'];
 $query_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM admins");
 $data_count  = mysqli_fetch_assoc($query_count);
 $total_admin = $data_count['total'];
+
+// C. AMBIL 1 DATA GEMPA TERAKHIR (REAL-TIME) - Untuk Tampilan Utama
+$q_latest = mysqli_query($conn, "SELECT * FROM data_gempa ORDER BY tanggal_jam DESC LIMIT 1");
+$latest = mysqli_fetch_assoc($q_latest);
+
+// Jika database kosong, beri data dummy
+if (!$latest) {
+    $latest = [
+        'magnitude' => '0.0',
+        'wilayah' => 'Belum ada data',
+        'tanggal_text' => '-',
+        'jam_text' => '-',
+        'potensi' => '-',
+        'dirasakan' => '-',
+        'shakemap' => '',
+        'kedalaman' => '-',
+        'lintang' => '-',
+        'bujur' => '-'
+    ];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -197,6 +218,134 @@ $total_admin = $data_count['total'];
             }
         }
 
+        /* --- HERO SECTION (LAYOUT BARU) --- */
+        .hero-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        /* Kiri: Peta */
+        .hero-map {
+            flex: 1 1 500px;
+            background: #000;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .map-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00d9ff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            border: 1px solid #00d9ff;
+        }
+
+        /* Kanan: Info */
+        .hero-info {
+            flex: 1 1 400px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            color: #00d9ff;
+            letter-spacing: 2px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .mag-display {
+            font-size: 80px;
+            font-weight: 800;
+            line-height: 1;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+        }
+
+        .mag-label {
+            font-size: 20px;
+            color: #00d9ff;
+            margin-left: 5px;
+        }
+
+        .date-display {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .location-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #00d9ff;
+        }
+
+        .location-box h4 {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .location-box p {
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .d-item h5 {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .d-item span {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00d9ff;
+        }
+
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -236,15 +385,8 @@ $total_admin = $data_count['total'];
             opacity: 0.5;
         }
 
-        /* PANEL & TABLES */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
         .panel {
+            margin-top: 20px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 25px;
@@ -318,6 +460,51 @@ $total_admin = $data_count['total'];
         .accordion-content.active {
             max-height: 2000px;
             padding: 15px;
+        }
+
+        /* --- TOMBOL SYNC KEREN (UPDATED) --- */
+        .btn-sync {
+            background: linear-gradient(90deg, #00d9ff, #007ea7);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efek Hover */
+        .btn-sync:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.8);
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+            /* Berubah warna jadi hijau-biru */
+            color: #000;
+        }
+
+        /* Efek Active/Click */
+        .btn-sync:active {
+            transform: translateY(1px);
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        /* Animasi Icon Putar saat hover */
+        .btn-sync:hover i {
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* GEMPA ITEMS */
@@ -433,117 +620,65 @@ $total_admin = $data_count['total'];
                 </div>
             </div>
 
-            <div class="main-grid">
-                <div class="panel">
-                    <h2><i class="fas fa-earthquake"></i> Gempa Terkini (Real-time)</h2>
-                    <?php
-                    // Ambil 1 data gempa paling baru berdasarkan waktu
-                    $q_latest = mysqli_query($conn, "SELECT * FROM data_gempa ORDER BY tanggal_jam DESC LIMIT 1");
-                    $latest = mysqli_fetch_assoc($q_latest);
-
-                    if ($latest) {
-                        // Logika untuk Potensi: Jika "-", ubah teksnya agar lebih informatif
-                        $potensi_text = $latest['potensi'];
-                        if ($potensi_text == '-' || $potensi_text == '') {
-                            // Jika magnitude kecil (< 5.0), biasanya memang tidak berpotensi
-                            if ($latest['magnitude'] < 5.0) {
-                                $potensi_text = "Tidak Berpotensi Tsunami (Gempa Kecil)";
-                            } else {
-                                $potensi_text = "Menunggu Pemutakhiran BMKG";
-                            }
-                        }
-
-                        // URL Gambar Shakemap
-                        $img_url = "https://data.bmkg.go.id/DataMKG/TEWS/" . $latest['shakemap'];
-                    ?>
-
-                        <div id="latest-earthquake" style="text-align: center; padding: 10px;">
-                            <h1 style="color: #00d9ff; font-size: 50px; margin: 0; font-weight:800;">
-                                M <?php echo $latest['magnitude']; ?>
-                            </h1>
-
-                            <h3 style="margin: 10px 0; font-size:18px; color: #fff;">
-                                <i class="fas fa-map-marker-alt"></i> <?php echo $latest['wilayah']; ?>
-                            </h3>
-
-                            <p style="opacity: 0.8; margin-bottom:15px;">
-                                <i class="fas fa-clock"></i> <?php echo $latest['tanggal_text'] . ' - ' . $latest['jam_text']; ?>
-                            </p>
-
-                            <div style="margin-top: 15px; padding: 15px; background: rgba(0, 217, 255, 0.1); border: 1px solid #00d9ff; border-radius: 8px;">
-                                <strong style="color: #00d9ff;">STATUS POTENSI:</strong><br>
-                                <span style="font-size: 16px; font-weight:bold;">
-                                    <?php echo $potensi_text; ?>
-                                </span>
-                            </div>
-
-                            <?php if (!empty($latest['shakemap'])) { ?>
-                                <div style="margin-top: 20px; border-radius: 10px; overflow: hidden; border:1px solid rgba(255,255,255,0.2);">
-                                    <p style="text-align:left; padding:5px 10px; background:rgba(0,0,0,0.5); font-size:12px;">Peta Guncangan (Shakemap):</p>
-                                    <img src="<?php echo $img_url; ?>" alt="Shakemap Gempa" style="width:100%; display:block;" onerror="this.style.display='none'">
-                                </div>
-                            <?php } ?>
-                        </div>
-
-                    <?php } else { ?>
-                        <div style="text-align: center; padding: 40px;">
-                            <i class="fas fa-cloud-download-alt" style="font-size: 40px; color: #ffd500; margin-bottom:15px;"></i>
-                            <h3>Data Belum Tersedia</h3>
-                            <p>Silakan klik tombol <b>"Ambil Data BMKG Terbaru"</b> di bawah.</p>
-                        </div>
-                    <?php } ?>
-
-                    <div id="shakemap-container" style="margin-top: 15px; border-radius: 10px; overflow: hidden;"></div>
+            <div class="hero-card">
+                <div class="hero-map">
+                    <div class="map-badge"><i class="fas fa-satellite"></i> LIVE SHAKEMAP</div>
+                    <?php if (!empty($latest['shakemap'])): ?>
+                        <img src="https://data.bmkg.go.id/DataMKG/TEWS/<?php echo $latest['shakemap']; ?>"
+                            alt="Peta Guncangan"
+                            onerror="this.src='https://via.placeholder.com/600x400?text=Peta+Belum+Tersedia';">
+                    <?php else: ?>
+                        <div style="color: #666;">Peta belum tersedia</div>
+                    <?php endif; ?>
                 </div>
 
-                <div class="panel">
-                    <h2><i class="fas fa-bell"></i> Gempa Dirasakan</h2>
-                    <div id="felt-earthquakes" style="max-height: 1170px; overflow-y: auto; padding-right:5px;">
+                <div class="hero-info">
+                    <div class="hero-header">
+                        <div class="hero-title">GEMPA BUMI TERKINI</div>
+                        <i class="fas fa-share-alt" style="color: #00d9ff; cursor: pointer;"></i>
+                    </div>
+
+                    <div class="mag-display">
+                        <?php echo $latest['magnitude']; ?><span class="mag-label">SR</span>
+                    </div>
+
+                    <div class="date-display">
+                        <i class="far fa-clock" style="color: #00d9ff;"></i>
+                        <?php echo $latest['tanggal_text'] . ' ' . $latest['jam_text']; ?>
+                    </div>
+
+                    <div class="location-box">
+                        <h4><i class="fas fa-map-marker-alt"></i> LOKASI PUSAT GEMPA</h4>
+                        <p><?php echo $latest['wilayah']; ?></p>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
                         <?php
-                        // Query: Ambil data yang kolom 'dirasakan' TIDAK kosong dan TIDAK '-'
-                        $q_felt = mysqli_query($conn, "SELECT * FROM data_gempa 
-                                       WHERE dirasakan != '-' 
-                                       AND dirasakan IS NOT NULL 
-                                       ORDER BY tanggal_jam DESC LIMIT 10");
-
-                        if (mysqli_num_rows($q_felt) > 0) {
-                            while ($gf = mysqli_fetch_assoc($q_felt)) {
-                                // Tentukan warna alert berdasarkan magnitude
-                                $mag = (float)$gf['magnitude'];
-                                $alert_class = ($mag >= 5.0) ? 'danger' : 'warning'; // Merah jika >= 5, Kuning jika < 5
-                        ?>
-
-                                <div class="alert-item <?php echo $alert_class; ?>" style="margin-bottom: 10px; border-left: 4px solid #ffd500; background: rgba(255,255,255,0.05); padding:10px; border-radius:5px;">
-                                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                                        <strong style="color: #ffd500;">M <?php echo $gf['magnitude']; ?></strong>
-                                        <small style="opacity:0.7;"><?php echo $gf['jam_text']; ?></small>
-                                    </div>
-                                    <div style="font-size: 13px; margin-bottom: 5px; font-weight:600;">
-                                        <?php echo $gf['wilayah']; ?>
-                                    </div>
-                                    <div style="font-size: 11px; opacity: 0.8; font-style:italic;">
-                                        <i class="fas fa-house-damage"></i> Dirasakan: <?php echo $gf['dirasakan']; ?>
-                                    </div>
-                                    <div style="font-size: 10px; opacity: 0.5; margin-top:5px; text-align:right;">
-                                        <?php echo $gf['tanggal_text']; ?>
-                                    </div>
-                                </div>
-
-                        <?php
-                            }
+                        if (stripos($latest['potensi'], 'TSUNAMI') !== false) {
+                            echo '<span style="background: rgba(255, 56, 56, 0.2); color: #ff3838; padding: 8px 15px; border-radius: 5px; border: 1px solid #ff3838; font-weight: bold;">BERPOTENSI TSUNAMI</span>';
                         } else {
-                            echo "<p style='text-align:center; opacity:0.6; padding:20px;'>Belum ada data gempa dirasakan.<br>Klik tombol 'Ambil Data BMKG' di atas.</p>";
+                            echo '<span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 8px 15px; border-radius: 5px; border: 1px solid #00ff88; font-weight: bold;">TIDAK BERPOTENSI TSUNAMI</span>';
                         }
                         ?>
                     </div>
 
+                    <div class="detail-grid">
+                        <div class="d-item">
+                            <h5>KEDALAMAN</h5>
+                            <span><?php echo $latest['kedalaman']; ?></span>
+                        </div>
+                        <div class="d-item">
+                            <h5>KOORDINAT</h5>
+                            <span style="font-size: 14px;"><?php echo $latest['lintang'] . ' / ' . $latest['bujur']; ?></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div class="panel">
                 <h2><i class="fas fa-table"></i> Data Gempa M ≥ 5.0 Terkini</h2>
-                <a href="sync_gempa.php" class="btn" style="float: right; margin-top: -50px; text-decoration:none;">
-                    <i class="fas fa-sync-alt"></i> Ambil Data BMKG Terbaru
+                <a href="sync_gempa.php" class="btn-sync" onclick="return animateSync(this)">
+                    <i class="fas fa-sync-alt" id="icon-sync"></i>
+                    <span id="text-sync">Ambil Data BMKG Terbaru</span>
                 </a>
                 <div class="data-table">
                     <table>
@@ -590,70 +725,68 @@ $total_admin = $data_count['total'];
                             }
                             ?>
                         </tbody>
-                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="footer">
-        <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
-    </div>
+        <div class="footer">
+            <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
+        </div>
 
-    <script>
-        // 1. PROXY & API URL
-        const PROXY = 'https://api.allorigins.win/raw?url=';
-        const API_BASE = 'https://data.bmkg.go.id/DataMKG/TEWS/';
+        <script>
+            // 1. PROXY & API URL
+            const PROXY = 'https://api.allorigins.win/raw?url=';
+            const API_BASE = 'https://data.bmkg.go.id/DataMKG/TEWS/';
 
-        // 2. JAM DIGITAL
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZone: 'Asia/Jakarta'
-            };
-            document.getElementById('datetime').textContent = now.toLocaleDateString('id-ID', options);
-        }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+            // 2. JAM DIGITAL
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: 'Asia/Jakarta'
+                };
+                document.getElementById('datetime').textContent = now.toLocaleDateString('id-ID', options);
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
 
-        // 3. SWITCH PAGE FUNCTION
-        function switchPage(pageId) {
-            // Sembunyikan semua section
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            // 3. SWITCH PAGE FUNCTION
+            function switchPage(pageId) {
+                // Sembunyikan semua section
+                document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Tampilkan section yang dipilih
-            document.getElementById(pageId + '-page').classList.add('active');
+                // Tampilkan section yang dipilih
+                document.getElementById(pageId + '-page').classList.add('active');
 
-            // Set tombol aktif (looping manual karena 'this' tidak selalu work di onclick inline)
-            const btns = document.querySelectorAll('.nav-btn');
-            if (pageId === 'dashboard') btns[0].classList.add('active');
-            if (pageId === 'education') btns[1].classList.add('active');
-            if (pageId === 'mitigation') btns[2].classList.add('active');
-        }
+                // Set tombol aktif (looping manual karena 'this' tidak selalu work di onclick inline)
+                const btns = document.querySelectorAll('.nav-btn');
+                if (pageId === 'dashboard') btns[0].classList.add('active');
+                if (pageId === 'education') btns[1].classList.add('active');
+                if (pageId === 'mitigation') btns[2].classList.add('active');
+            }
 
-        // 4. ACCORDION FUNCTION
-        function toggleAccordion(header) {
-            const content = header.nextElementSibling;
-            header.classList.toggle('active');
-            content.classList.toggle('active');
-        }
+            // 4. ACCORDION FUNCTION
+            function toggleAccordion(header) {
+                const content = header.nextElementSibling;
+                header.classList.toggle('active');
+                content.classList.toggle('active');
+            }
 
-        // 5. FETCH DATA GEMPA TERKINI (AutoGempa)
-        async function fetchLatestEarthquake() {
-            try {
-                const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'autogempa.json'));
-                const data = await response.json();
-                const gempa = data.Infogempa.gempa;
+            // 5. FETCH DATA GEMPA TERKINI (AutoGempa)
+            async function fetchLatestEarthquake() {
+                try {
+                    const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'autogempa.json'));
+                    const data = await response.json();
+                    const gempa = data.Infogempa.gempa;
 
-                let html = `
+                    let html = `
                     <h1 style="color: #00d9ff; font-size: 40px; margin: 0;">M ${gempa.Magnitude}</h1>
                     <h3 style="margin: 5px 0;">${gempa.Wilayah}</h3>
                     <p style="opacity: 0.8;">${gempa.Tanggal} - ${gempa.Jam}</p>
@@ -661,28 +794,28 @@ $total_admin = $data_count['total'];
                         <strong>Potensi:</strong> ${gempa.Potensi}
                     </div>
                 `;
-                document.getElementById('latest-earthquake').innerHTML = html;
+                    document.getElementById('latest-earthquake').innerHTML = html;
 
-                // Shakemap
-                if (gempa.Shakemap) {
-                    document.getElementById('shakemap-container').innerHTML = `<img src="https://data.bmkg.go.id/DataMKG/TEWS/${gempa.Shakemap}" style="width:100%; display:block;">`;
+                    // Shakemap
+                    if (gempa.Shakemap) {
+                        document.getElementById('shakemap-container').innerHTML = `<img src="https://data.bmkg.go.id/DataMKG/TEWS/${gempa.Shakemap}" style="width:100%; display:block;">`;
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
-            } catch (e) {
-                console.error(e);
             }
-        }
 
 
-        // 7. FETCH GEMPA DIRASAKAN
-        async function fetchFelt() {
-            try {
-                const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'gempadirasakan.json'));
-                const data = await response.json();
-                const list = data.Infogempa.gempa;
+            // 7. FETCH GEMPA DIRASAKAN
+            async function fetchFelt() {
+                try {
+                    const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'gempadirasakan.json'));
+                    const data = await response.json();
+                    const list = data.Infogempa.gempa;
 
-                let html = '';
-                list.slice(0, 5).forEach(g => {
-                    html += `
+                    let html = '';
+                    list.slice(0, 5).forEach(g => {
+                        html += `
                         <div class="alert-item warning">
                             <div style="display:flex; justify-content:space-between;">
                                 <strong>M ${g.Magnitude}</strong>
@@ -692,18 +825,31 @@ $total_admin = $data_count['total'];
                             <div style="font-size: 11px; opacity: 0.7;">Dirasakan: ${g.Dirasakan}</div>
                         </div>
                     `;
-                });
-                document.getElementById('felt-earthquakes').innerHTML = html;
-            } catch (e) {
-                console.error(e);
+                    });
+                    document.getElementById('felt-earthquakes').innerHTML = html;
+                } catch (e) {
+                    console.error(e);
+                }
             }
-        }
+            // FUNGSI ANIMASI TOMBOL SINKRONISASI
+            function animateSync(btn) {
+                const icon = document.getElementById('icon-sync');
+                const text = document.getElementById('text-sync');
 
-        // Jalankan Fetch saat load
-        fetchLatestEarthquake();
-        fetchTableData();
-        fetchFelt();
-    </script>
+                // Ubah tampilan agar user tahu proses sedang berjalan
+                icon.classList.add('fa-spin'); // Class bawaan fontawesome untuk putar
+                text.innerText = "Menyinkronkan...";
+                btn.style.opacity = "0.8";
+                btn.style.pointerEvents = "none"; // Cegah double click
+
+                return true; // Lanjutkan link ke sync_gempa.php
+            }
+
+            // Jalankan Fetch saat load
+            fetchLatestEarthquake();
+            fetchTableData();
+            fetchFelt();
+        </script>
 </body>
 
 </html>

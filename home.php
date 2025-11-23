@@ -205,7 +205,7 @@ $username_login = isset($_SESSION['login_user']) ? $_SESSION['login_user'] : 'Gu
                 <a href="education.html" class="nav-btn"><i class="fas fa-book"></i> Edukasi</a>
                 <a href="mitigasi.html" class="nav-btn"><i class="fas fa-shield-alt"></i> Mitigasi</a>
                 <a href="penanggulangan.html" class="nav-btn"><i class="fas fa-hands-helping"></i> Penanggulangan</a>
-                <a href="peta.html" class="nav-btn"><i class="fas fa-map"></i> Peta</a>
+                <a href="peta.php" class="nav-btn"><i class="fas fa-map"></i> Peta</a>
             </div>
         </div>
     </div>
