@@ -223,9 +223,104 @@ $total_admin = $data_count['total'];
                 grid-template-columns: 1fr;
             }
         }
-    </style>
-</head>
+        /* WRAPPER KONTEN */
+.content-wrapper {
+    max-width: 550px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 35px 40px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+}
 
+/* JUDUL HALAMAN */
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00d9ff;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* FORM */
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* LABEL */
+.form-box label {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* INPUT & SELECT */
+.form-box input,
+.form-box select {
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    color: #fff;
+    font-size: 14px;
+    transition: 0.25s;
+}
+
+.form-box input:focus,
+.form-box select:focus {
+    outline: none;
+    border: 1px solid #00d9ff;
+    background: rgba(0, 217, 255, 0.08);
+}
+
+/* SUBMIT BUTTON */
+.btn-submit {
+    background: #00d9ff;
+    color: #001f2b;
+    padding: 13px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-submit:hover {
+    background: #00b8d4;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .content-wrapper {
+        margin: 30px 20px;
+        padding: 25px;
+    }
+    .page-title {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+<script>
+document.querySelector("input[name='nama']").focus();
+document.querySelector(".form-box").addEventListener("submit", function(e) {
+    const input = document.querySelector("input[name='nama']").value.trim();
+    if (input.length < 3) {
+        alert("Nama wilayah terlalu pendek!");
+        e.preventDefault();
+    }
+});
+</script>
 <body>
 
     <div class="header">
@@ -243,10 +338,10 @@ $total_admin = $data_count['total'];
                     <i class="fas fa-home"></i> Dashboard
                 </a>
                 <a href="petaadmin.php" class="nav-btn">
-                    <i class="fas fa-map"></i> Kelola wilayah
+                    <i class="fas fa-map"></i> Peta
                 </a>
                 <a href="tambah-wilayah.php" class="nav-btn active">
-                <i class="fas fa-map-marked-alt"></i> Tambah Wilayah
+                <i class="fas fa-map-marked-alt"></i> Kelola Wilayah
                 </a>
                 <a href="logout.php" class="nav-btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -259,17 +354,25 @@ $total_admin = $data_count['total'];
             </div>
         </div>
     </div>
-<form action="" method="POST">
-    <input type="text" name="nama" placeholder="Nama wilayah" required>
-    
-    <select name="kategori" required>
-        <option value="tinggi">Risiko Tinggi</option>
-        <option value="sedang">Risiko Sedang</option>
-        <option value="rendah">Risiko Rendah</option>
-    </select>
+<div class="content-wrapper">
+    <h2 class="page-title">Tambah Wilayah Risiko Tsunami</h2>
 
-    <button type="submit" name="simpan">Simpan</button>
-</form>
+    <form action="" method="POST" class="form-box">
+        <label>Nama Wilayah</label>
+        <input type="text" name="nama" placeholder="Masukkan nama wilayah..." required>
+
+        <label>Kategori Risiko</label>
+        <select name="kategori" required>
+            <option value="tinggi">Risiko Tinggi</option>
+            <option value="sedang">Risiko Sedang</option>
+            <option value="rendah">Risiko Rendah</option>
+        </select>
+
+        <button type="submit" name="simpan" class="btn-submit">
+            <i class="fas fa-save"></i> Simpan Wilayah
+        </button>
+    </form>
+</div>
 
 <?php
 if (isset($_POST['simpan'])) {
