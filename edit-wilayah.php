@@ -197,10 +197,9 @@ body{
 
         <label>Kategori Risiko</label>
         <select name="kategori" id="kategori" required>
-            <option value="" selected disabled>Pilih kategori...</option>
-            <option value="tinggi" data-color="#ff3838">🔴 Risiko Tinggi</option>
-            <option value="sedang" data-color="#ffd500">🟡 Risiko Sedang</option>
-            <option value="rendah" data-color="#00ff88">🟢 Risiko Rendah</option>
+            <option value="tinggi" <?= $w['kategori']=="tinggi" ? "selected" : ""; ?>>🔴 Risiko Tinggi</option>
+            <option value="sedang" <?= $w['kategori']=="sedang" ? "selected" : ""; ?>>🟡 Risiko Sedang</option>
+            <option value="rendah" <?= $w['kategori']=="rendah" ? "selected" : ""; ?>>🟢 Risiko Rendah</option>
         </select>
 
         <button type="submit" name="update" class="btn-submit">
