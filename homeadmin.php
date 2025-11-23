@@ -394,7 +394,7 @@ $total_admin = $data_count['total'];
                 <a href="penanggulangan.html" class="nav-btn">
                     <i class="fas fa-hands-helping"></i> Penanggulangan
                 </a> -->
-                <a href="peta-admin.php" class="nav-btn">
+                <a href="petaadmin.php" class="nav-btn">
                     <i class="fas fa-map"></i> Peta
                 </a>
                 <a href="logout.php" class="nav-btn btn-logout">

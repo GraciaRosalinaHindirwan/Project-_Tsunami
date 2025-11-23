@@ -1,18 +1,3 @@
-<?php
-include 'koneksi.php';
-
-function loadWilayah($conn, $kategori) {
-    $query = mysqli_query($conn, "SELECT * FROM wilayah_resiko WHERE kategori='$kategori' ORDER BY nama_wilayah ASC");
-    $data = [];
-    while ($row = mysqli_fetch_assoc($query)) $data[] = $row;
-    return $data;
-}
-
-$tinggi = loadWilayah($conn, 'tinggi');
-$sedang = loadWilayah($conn, 'sedang');
-$rendah = loadWilayah($conn, 'rendah');
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +19,7 @@ $rendah = loadWilayah($conn, 'rendah');
             </div>
         </div>
         <div class="nav-menu">
-            <a href="home.php" class="nav-btn">
+            <a href="home.html" class="nav-btn">
                 <i class="fas fa-home"></i> Dashboard
             </a>
             <a href="evakuasi.html" class="nav-btn">
@@ -49,7 +34,7 @@ $rendah = loadWilayah($conn, 'rendah');
             <a href="penanggulangan.html" class="nav-btn">
                 <i class="fas fa-hands-helping"></i> Penanggulangan
             </a>
-            <a href="peta.php" class="nav-btn active">
+            <a href="peta.html" class="nav-btn active">
                 <i class="fas fa-map"></i> Peta
             </a>
 </div>
@@ -96,9 +81,11 @@ $rendah = loadWilayah($conn, 'rendah');
         <div class="info-card">
             <h3><i class="fas fa-exclamation-circle"></i> Wilayah Risiko Tinggi</h3>
             <ul>
-                <?php foreach ($tinggi as $w) : ?>
-                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> <?= $w['nama_wilayah']; ?></li>
-                <?php endforeach; ?>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Pantai Barat Sumatra</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Pantai Selatan Jawa</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Bali & NTB</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Sulawesi Tengah</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ff3838;"></i> Maluku & Papua</li>
             </ul>
         </div>
 
@@ -106,9 +93,10 @@ $rendah = loadWilayah($conn, 'rendah');
         <div class="info-card">
             <h3><i class="fas fa-exclamation-circle"></i> Wilayah Risiko Sedang</h3>
             <ul>
-                <?php foreach ($sedang as $w) : ?>
-            <li><i class="fas fa-circle" style="font-size:8px; color:#ffd500;"></i> <?= $w['nama_wilayah']; ?></li>
-            <?php endforeach; ?>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ffd500;"></i> Pantai Utara Jawa</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ffd500;"></i> Sebagian Sulawesi Selatan</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ffd500;"></i> Sebagian Kalimantan Timur</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#ffd500;"></i> Kepulauan Nias</li>
             </ul>
         </div>
 
@@ -116,9 +104,9 @@ $rendah = loadWilayah($conn, 'rendah');
         <div class="info-card">
             <h3><i class="fas fa-exclamation-circle"></i> Wilayah Risiko Rendah</h3>
             <ul>
-                <?php foreach ($rendah as $w) : ?>
-                <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> <?= $w['nama_wilayah']; ?></li>
-                <?php endforeach; ?>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> Pantai Selatan Kalimantan</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> Sebagian Maluku Utara</li>
+                <li><i class="fas fa-circle" style="font-size:8px; color:#00ff88;"></i> Papua bagian utara</li>
             </ul>
         </div>
         </div>

@@ -223,128 +223,6 @@ $total_admin = $data_count['total'];
                 grid-template-columns: 1fr;
             }
         }
-        /* WRAPPER KONTEN */
-.content-wrapper {
-    max-width: 1200px;
-    margin: 40px auto;
-    background: rgba(255, 255, 255, 0.07);
-    padding: 35px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.15);
-    backdrop-filter: blur(6px);
-}
-
-/* JUDUL HALAMAN */
-.page-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #00d9ff;
-    margin-bottom: 20px;
-}
-
-/* TOMBOL TAMBAH */
-.btn-add {
-    display: inline-block;
-    background: #00d9ff;
-    color: #001f2b;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 700;
-    text-decoration: none;
-    margin-bottom: 18px;
-    transition: 0.3s;
-}
-.btn-add:hover {
-    background: #00b8d4;
-    transform: translateY(-2px);
-}
-
-/* TABLE */
-.table-container {
-    overflow-x: auto;
-}
-
-.risk-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.risk-table th {
-    background: rgba(0, 217, 255, 0.2);
-    color: #00d9ff;
-    padding: 14px;
-    text-align: left;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-}
-
-.risk-table td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 14px;
-}
-
-/* KATEGORI BADGE */
-.badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: capitalize;
-}
-
-.badge.tinggi {
-    background: #ff3838;
-}
-.badge.sedang {
-    background: #ffd500;
-    color: #000;
-}
-.badge.rendah {
-    background: #00ff88;
-    color: #000;
-}
-
-/* TOMBOL AKSI */
-.btn-edit,
-.btn-delete {
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.btn-edit {
-    background: rgba(0, 217, 255, 0.2);
-    color: #00d9ff;
-}
-.btn-edit:hover {
-    background: #00d9ff;
-    color: #001f2b;
-}
-
-.btn-delete {
-    background: rgba(255, 56, 56, 0.15);
-    color: #ff3838;
-}
-.btn-delete:hover {
-    background: #ff3838;
-    color: #fff;
-}
-
-/* RESPONSIVE */
-@media(max-width: 600px) {
-    .page-title {
-        font-size: 20px;
-    }
-    .btn-add {
-        font-size: 13px;
-        padding: 8px 14px;
-    }
-}
-
     </style>
 </head>
 
@@ -364,10 +242,10 @@ $total_admin = $data_count['total'];
                 <a href="homeadmin.php" class="nav-btn">
                     <i class="fas fa-home"></i> Dashboard
                 </a>
-                <a href="petaadmin.php" class="nav-btn active">
-                    <i class="fas fa-map"></i> Kelola Wilayah
+                <a href="petaadmin.php" class="nav-btn">
+                    <i class="fas fa-map"></i> Kelola wilayah
                 </a>
-                <a href="tambah-wilayah.php" class="nav-btn">
+                <a href="tambah-wilayah.php" class="nav-btn active">
                 <i class="fas fa-map-marked-alt"></i> Tambah Wilayah
                 </a>
                 <a href="logout.php" class="nav-btn btn-logout">
@@ -381,48 +259,32 @@ $total_admin = $data_count['total'];
             </div>
         </div>
     </div>
+<form action="" method="POST">
+    <input type="text" name="nama" placeholder="Nama wilayah" required>
+    
+    <select name="kategori" required>
+        <option value="tinggi">Risiko Tinggi</option>
+        <option value="sedang">Risiko Sedang</option>
+        <option value="rendah">Risiko Rendah</option>
+    </select>
 
-    <?php
-include 'koneksi.php';
-$wilayah = mysqli_query($conn, "SELECT * FROM wilayah_resiko ORDER BY kategori, nama_wilayah");
+    <button type="submit" name="simpan">Simpan</button>
+</form>
+
+<?php
+if (isset($_POST['simpan'])) {
+    include 'koneksi.php';
+    $nama = $_POST['nama'];
+    $kategori = $_POST['kategori'];
+
+    mysqli_query($conn, "INSERT INTO wilayah_resiko (nama_wilayah, kategori) VALUES ('$nama', '$kategori')");
+    header("Location: manage_wilayah.php");
+}
 ?>
-<div class="content-wrapper">
-
-    <h2 class="page-title">Manajemen Wilayah Risiko Tsunami</h2>
-
-    <a href="tambah-wilayah.php" class="btn-add">+ Tambah Wilayah</a>
-
-    <div class="table-container">
-        <table class="risk-table">
-            <tr>
-                <th>Wilayah</th>
-                <th>Kategori</th>
-                <th>Aksi</th>
-            </tr>
-
-            <?php while ($w = mysqli_fetch_assoc($wilayah)) : ?>
-            <tr>
-                <td><?= $w['nama_wilayah']; ?></td>
-                <td><span class="badge <?= $w['kategori']; ?>"><?= ucfirst($w['kategori']); ?></span></td>
-                <td>
-                    <a href="edit_wilayah.php?id=<?= $w['id']; ?>" class="btn-edit">Edit</a>
-                    <a href="hapus_wilayah.php?id=<?= $w['id']; ?>" class="btn-delete" onclick="return konfirmasiHapus('<?= $w['nama_wilayah']; ?>')">Hapus</a>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
-    </div>
-
-</div>
-
     <div class="container">                 
     <div class="footer">
         <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
     </div>
 </body>
-<script>
-function konfirmasiHapus(nama) {
-    return confirm("Yakin ingin menghapus wilayah:\n\n" + nama + " ?");
-}
-</script>
+
 </html>
