@@ -3,7 +3,7 @@ include 'koneksi.php';
 
 // --- LOGIKA SINKRONISASI GEMPA ---
 
-// 1. HAPUS DATA LAMA (Lebih dari 30 Hari) AGAR DATABASE TIDAK PENUH
+// 1. HAPUS DATA LAMA (Lebih dari 30 Hari)
 mysqli_query($conn, "DELETE FROM data_gempa WHERE tanggal_jam < DATE_SUB(NOW(), INTERVAL 30 DAY)");
 
 function simpanGempa($conn, $url) {
@@ -14,12 +14,11 @@ function simpanGempa($conn, $url) {
     $data = json_decode($json_data, true);
     $count_new = 0;
 
-    // Cek apakah struktur JSON valid
+    // Cek validitas JSON
     if (isset($data['Infogempa']['gempa'])) {
         $gempa_list = $data['Infogempa']['gempa'];
         
-        // Jika data cuma 1 (objek), ubah jadi array agar loop foreach tetap jalan
-        // (BMKG kadang mengembalikan object untuk single data, array untuk list)
+        // Normalisasi format jika data tunggal
         if (isset($gempa_list['Tanggal'])) {
             $gempa_list = [$gempa_list];
         }
@@ -35,11 +34,9 @@ function simpanGempa($conn, $url) {
             // B. BERSIHKAN TANGGAL & JAM
             $tanggal_str = $gempa['Tanggal']; 
             $jam_str     = $gempa['Jam'];
-            // Hapus "WIB", "WITA", dll untuk konversi waktu
             $jam_clean   = preg_replace('/(WIB|WITA|WIT)/', '', $jam_str); 
             $jam_clean   = trim($jam_clean);
             
-            // Konversi Nama Bulan (Indo -> Inggris) untuk format SQL
             $bulan_indo  = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
             $bulan_ing   = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             $tanggal_ing = str_replace($bulan_indo, $bulan_ing, $tanggal_str);
@@ -47,24 +44,32 @@ function simpanGempa($conn, $url) {
             $datetime_str = $tanggal_ing . ' ' . $jam_clean;
             $datetime_sql = date('Y-m-d H:i:s', strtotime($datetime_str));
             
-            // C. PERBAIKAN POTENSI
+            // --- C. PERBAIKAN POTENSI (LOGIKA BARU DI SINI) ---
             $potensi_raw = isset($gempa['Potensi']) ? $gempa['Potensi'] : '';
-            if (empty($potensi_raw) || $potensi_raw == '-') {
-                $potensi_raw = "Tidak ada keterangan potensi"; 
+            $potensi_upper = strtoupper($potensi_raw); // Ubah ke huruf besar semua biar mudah dicek
+
+            // Logic: Default-nya "TIDAK BERPOTENSI TSUNAMI"
+            // Kecuali jika ada kata "TSUNAMI" tapi TIDAK ADA kata "TIDAK"
+            $potensi_fix = "TIDAK BERPOTENSI TSUNAMI";
+
+            if (strpos($potensi_upper, 'TSUNAMI') !== false && strpos($potensi_upper, 'TIDAK') === false) {
+                // Jika mengandung kata TSUNAMI dan tidak ada kata TIDAK -> BAHAYA
+                $potensi_fix = "BERPOTENSI TSUNAMI";
             }
-            $potensi = mysqli_real_escape_string($conn, $potensi_raw);
+            // Jika kalimatnya "Gempa ini dirasakan...", otomatis akan masuk ke default "TIDAK BERPOTENSI TSUNAMI"
+
+            $potensi = mysqli_real_escape_string($conn, $potensi_fix);
+            // -----------------------------------------------------
             
             $dirasakan = isset($gempa['Dirasakan']) ? mysqli_real_escape_string($conn, $gempa['Dirasakan']) : '-';
 
-            // D. AMBIL SHAKEMAP (GAMBAR) - BAGIAN YANG DITAMBAHKAN
-            // Cek apakah field Shakemap ada di JSON
+            // D. AMBIL SHAKEMAP
             $shakemap = '';
             if (isset($gempa['Shakemap']) && !empty($gempa['Shakemap'])) {
                 $shakemap = mysqli_real_escape_string($conn, $gempa['Shakemap']);
             }
 
-            // E. INSERT KE DATABASE (Termasuk kolom shakemap)
-            // Menggunakan INSERT IGNORE agar jika data sudah ada (berdasarkan unique key tanggal_jam+lintang+bujur), tidak error.
+            // E. INSERT KE DATABASE
             $query = "INSERT IGNORE INTO data_gempa 
                       (tanggal_jam, tanggal_text, jam_text, magnitude, kedalaman, wilayah, lintang, bujur, potensi, dirasakan, shakemap)
                       VALUES 
@@ -80,17 +85,10 @@ function simpanGempa($conn, $url) {
 
 // --- EKSEKUSI SINKRONISASI ---
 $total_masuk = 0;
-
-// 1. Ambil Gempa TERKINI (1 Gempa Terbaru - Biasanya ada Shakemap)
-// URL ini penting karena biasanya berisi gempa paling update dengan gambar
 $total_masuk += simpanGempa($conn, "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json");
-
-// 2. Ambil Gempa Dirasakan (Biasanya ada Shakemap)
 $total_masuk += simpanGempa($conn, "https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json");
-
-// 3. Ambil Gempa M 5.0+ (List 15 gempa, kadang ada shakemap kadang tidak)
 $total_masuk += simpanGempa($conn, "https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json");
 
-// Redirect kembali ke dashboard/home dengan pesan sukses
 header("Location: homeadmin.php?status=success&new=$total_masuk");
+exit();
 ?>
