@@ -674,133 +674,132 @@ if (!$latest) {
                         }
                         ?>
                     </div>
-                </div>
 
-                <div class="detail-grid">
-                    <div class="d-item">
-                        <h5>KEDALAMAN</h5>
-                        <span><?php echo $latest['kedalaman']; ?></span>
-                    </div>
-                    <div class="d-item">
-                        <h5>KOORDINAT</h5>
-                        <span style="font-size: 14px;"><?php echo $latest['lintang'] . ' / ' . $latest['bujur']; ?></span>
+                    <div class="detail-grid">
+                        <div class="d-item">
+                            <h5>KEDALAMAN</h5>
+                            <span><?php echo $latest['kedalaman']; ?></span>
+                        </div>
+                        <div class="d-item">
+                            <h5>KOORDINAT</h5>
+                            <span style="font-size: 14px;"><?php echo $latest['lintang'] . ' / ' . $latest['bujur']; ?></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="panel">
-            <h2><i class="fas fa-table"></i> Data Gempa M ≥ 5.0 Terkini</h2>
-            <a href="sync_gempa.php" class="btn-sync" onclick="return animateSync(this)">
-                <i class="fas fa-sync-alt" id="icon-sync"></i>
-                <span id="text-sync">Ambil Data BMKG Terbaru</span>
-            </a>
-            <div class="data-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Waktu</th>
-                            <th>Magnitudo</th>
-                            <th>Kedalaman</th>
-                            <th>Wilayah</th>
-                            <th>Potensi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="earthquake-data">
-                        <?php
-                        $query_gempa = mysqli_query($conn, "SELECT * FROM data_gempa WHERE magnitude >= 5.0 ORDER BY tanggal_jam DESC LIMIT 10");
+            <div class="panel">
+                <h2><i class="fas fa-table"></i> Data Gempa M ≥ 5.0 Terkini</h2>
+                <a href="sync_gempa.php" class="btn-sync" onclick="return animateSync(this)">
+                    <i class="fas fa-sync-alt" id="icon-sync"></i>
+                    <span id="text-sync">Ambil Data BMKG Terbaru</span>
+                </a>
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Magnitudo</th>
+                                <th>Kedalaman</th>
+                                <th>Wilayah</th>
+                                <th>Potensi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="earthquake-data">
+                            <?php
+                            $query_gempa = mysqli_query($conn, "SELECT * FROM data_gempa WHERE magnitude >= 5.0 ORDER BY tanggal_jam DESC LIMIT 10");
 
-                        if (mysqli_num_rows($query_gempa) > 0) {
-                            while ($row = mysqli_fetch_assoc($query_gempa)) {
-                                // Logika Perbaikan Tampilan Potensi
-                                $potensi_tabel = $row['potensi'];
-                                $warna_potensi = "#fff"; // Default putih
+                            if (mysqli_num_rows($query_gempa) > 0) {
+                                while ($row = mysqli_fetch_assoc($query_gempa)) {
+                                    // Logika Perbaikan Tampilan Potensi
+                                    $potensi_tabel = $row['potensi'];
+                                    $warna_potensi = "#fff"; // Default putih
 
-                                if ($potensi_tabel == '-' || $potensi_tabel == '') {
-                                    // Jika kosong/strip, ganti teksnya
-                                    $potensi_tabel = "<span style='opacity:0.5; font-style:italic;'>Tidak ada info</span>";
-                                } elseif (stripos($potensi_tabel, 'tidak berpotensi') !== false) {
-                                    // Jika aman, warna hijau
-                                    $warna_potensi = "#00ff88";
-                                } elseif (stripos($potensi_tabel, 'potensi tsunami') !== false) {
-                                    // Jika bahaya, warna merah
-                                    $warna_potensi = "#ff3838";
+                                    if ($potensi_tabel == '-' || $potensi_tabel == '') {
+                                        // Jika kosong/strip, ganti teksnya
+                                        $potensi_tabel = "<span style='opacity:0.5; font-style:italic;'>Tidak ada info</span>";
+                                    } elseif (stripos($potensi_tabel, 'tidak berpotensi') !== false) {
+                                        // Jika aman, warna hijau
+                                        $warna_potensi = "#00ff88";
+                                    } elseif (stripos($potensi_tabel, 'potensi tsunami') !== false) {
+                                        // Jika bahaya, warna merah
+                                        $warna_potensi = "#ff3838";
+                                    }
+
+                                    echo "<tr>";
+                                    echo "<td>" . $row['tanggal_text'] . "<br><small>" . $row['jam_text'] . "</small></td>";
+                                    echo "<td><strong style='color: #ffd500;'>M " . $row['magnitude'] . "</strong></td>";
+                                    echo "<td>" . $row['kedalaman'] . "</td>";
+                                    echo "<td>" . $row['wilayah'] . "</td>";
+                                    echo "<td style='color: $warna_potensi;'>" . $potensi_tabel . "</td>";
+                                    echo "</tr>";
                                 }
-
-                                echo "<tr>";
-                                echo "<td>" . $row['tanggal_text'] . "<br><small>" . $row['jam_text'] . "</small></td>";
-                                echo "<td><strong style='color: #ffd500;'>M " . $row['magnitude'] . "</strong></td>";
-                                echo "<td>" . $row['kedalaman'] . "</td>";
-                                echo "<td>" . $row['wilayah'] . "</td>";
-                                echo "<td style='color: $warna_potensi;'>" . $potensi_tabel . "</td>";
-                                echo "</tr>";
+                            } else {
+                                echo "<tr><td colspan='5' style='text-align:center; padding:20px;'>Database kosong. Klik tombol sinkronisasi.</td></tr>";
                             }
-                        } else {
-                            echo "<tr><td colspan='5' style='text-align:center; padding:20px;'>Database kosong. Klik tombol sinkronisasi.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="footer">
-        <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
-    </div>
+        <div class="footer">
+            <p>&copy; 2025 SIM TSUNAMI | Logged in as: <?php echo $nama_lengkap; ?> | Data Source: BMKG</p>
+        </div>
 
-    <script>
-        // 1. PROXY & API URL
-        const PROXY = 'https://api.allorigins.win/raw?url=';
-        const API_BASE = 'https://data.bmkg.go.id/DataMKG/TEWS/';
+        <script>
+            // 1. PROXY & API URL
+            const PROXY = 'https://api.allorigins.win/raw?url=';
+            const API_BASE = 'https://data.bmkg.go.id/DataMKG/TEWS/';
 
-        // 2. JAM DIGITAL
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZone: 'Asia/Jakarta'
-            };
-            document.getElementById('datetime').textContent = now.toLocaleDateString('id-ID', options);
-        }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+            // 2. JAM DIGITAL
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: 'Asia/Jakarta'
+                };
+                document.getElementById('datetime').textContent = now.toLocaleDateString('id-ID', options);
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
 
-        // 3. SWITCH PAGE FUNCTION
-        function switchPage(pageId) {
-            // Sembunyikan semua section
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            // 3. SWITCH PAGE FUNCTION
+            function switchPage(pageId) {
+                // Sembunyikan semua section
+                document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Tampilkan section yang dipilih
-            document.getElementById(pageId + '-page').classList.add('active');
+                // Tampilkan section yang dipilih
+                document.getElementById(pageId + '-page').classList.add('active');
 
-            // Set tombol aktif (looping manual karena 'this' tidak selalu work di onclick inline)
-            const btns = document.querySelectorAll('.nav-btn');
-            if (pageId === 'dashboard') btns[0].classList.add('active');
-            if (pageId === 'education') btns[1].classList.add('active');
-            if (pageId === 'mitigation') btns[2].classList.add('active');
-        }
+                // Set tombol aktif (looping manual karena 'this' tidak selalu work di onclick inline)
+                const btns = document.querySelectorAll('.nav-btn');
+                if (pageId === 'dashboard') btns[0].classList.add('active');
+                if (pageId === 'education') btns[1].classList.add('active');
+                if (pageId === 'mitigation') btns[2].classList.add('active');
+            }
 
-        // 4. ACCORDION FUNCTION
-        function toggleAccordion(header) {
-            const content = header.nextElementSibling;
-            header.classList.toggle('active');
-            content.classList.toggle('active');
-        }
+            // 4. ACCORDION FUNCTION
+            function toggleAccordion(header) {
+                const content = header.nextElementSibling;
+                header.classList.toggle('active');
+                content.classList.toggle('active');
+            }
 
-        // 5. FETCH DATA GEMPA TERKINI (AutoGempa)
-        async function fetchLatestEarthquake() {
-            try {
-                const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'autogempa.json'));
-                const data = await response.json();
-                const gempa = data.Infogempa.gempa;
+            // 5. FETCH DATA GEMPA TERKINI (AutoGempa)
+            async function fetchLatestEarthquake() {
+                try {
+                    const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'autogempa.json'));
+                    const data = await response.json();
+                    const gempa = data.Infogempa.gempa;
 
-                let html = `
+                    let html = `
                     <h1 style="color: #00d9ff; font-size: 40px; margin: 0;">M ${gempa.Magnitude}</h1>
                     <h3 style="margin: 5px 0;">${gempa.Wilayah}</h3>
                     <p style="opacity: 0.8;">${gempa.Tanggal} - ${gempa.Jam}</p>
@@ -808,52 +807,52 @@ if (!$latest) {
                         <strong>Potensi:</strong> ${gempa.Potensi}
                     </div>
                 `;
-                document.getElementById('latest-earthquake').innerHTML = html;
+                    document.getElementById('latest-earthquake').innerHTML = html;
 
-                // Shakemap
-                if (gempa.Shakemap) {
-                    document.getElementById('shakemap-container').innerHTML = `<img src="https://data.bmkg.go.id/DataMKG/TEWS/${gempa.Shakemap}" style="width:100%; display:block;">`;
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-
-        // 7. FETCH GEMPA DIRASAKAN
-        async function fetchFelt() {
-            try {
-                const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'gempadirasakan.json'));
-                const data = await response.json();
-                const list = data.Infogempa.gempa;
-
-                // ... kode fetch sebelumnya ...
-                const gempa = data.Infogempa.gempa;
-
-                // --- LOGIKA PERBAIKAN TAMPILAN POTENSI (VERSI FINAL) ---
-                let potensiUpper = gempa.Potensi.toUpperCase();
-                let badgePotensi = '';
-
-                // Cek 1: Apakah ada kata TSUNAMI?
-                if (potensiUpper.includes('TSUNAMI')) {
-                    // Cek 2: Apakah ada kata TIDAK?
-                    if (potensiUpper.includes('TIDAK')) {
-                        // Ada TSUNAMI tapi ada TIDAK = Hijau
-                        badgePotensi = `<span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 8px 15px; border-radius: 5px; border: 1px solid #00ff88; font-weight: bold;">TIDAK BERPOTENSI TSUNAMI</span>`;
-                    } else {
-                        // Ada TSUNAMI dan TIDAK ada penyangkalan = Merah
-                        badgePotensi = `<span style="background: rgba(255, 56, 56, 0.2); color: #ff3838; padding: 8px 15px; border-radius: 5px; border: 1px solid #ff3838; font-weight: bold;">BERPOTENSI TSUNAMI</span>`;
+                    // Shakemap
+                    if (gempa.Shakemap) {
+                        document.getElementById('shakemap-container').innerHTML = `<img src="https://data.bmkg.go.id/DataMKG/TEWS/${gempa.Shakemap}" style="width:100%; display:block;">`;
                     }
-                } else {
-                    // Jika kalimatnya "Gempa ini dirasakan..." (Tidak ada kata Tsunami) = Hijau
-                    badgePotensi = `<span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 8px 15px; border-radius: 5px; border: 1px solid #00ff88; font-weight: bold;">TIDAK BERPOTENSI TSUNAMI</span>`;
+                } catch (e) {
+                    console.error(e);
                 }
+            }
 
-                // ... lanjutkan kode html template literal ...
 
-                let html = '';
-                list.slice(0, 5).forEach(g => {
-                    html += `
+            // 7. FETCH GEMPA DIRASAKAN
+            async function fetchFelt() {
+                try {
+                    const response = await fetch(PROXY + encodeURIComponent(API_BASE + 'gempadirasakan.json'));
+                    const data = await response.json();
+                    const list = data.Infogempa.gempa;
+
+                    // ... kode fetch sebelumnya ...
+                    const gempa = data.Infogempa.gempa;
+
+                    // --- LOGIKA PERBAIKAN TAMPILAN POTENSI (VERSI FINAL) ---
+                    let potensiUpper = gempa.Potensi.toUpperCase();
+                    let badgePotensi = '';
+
+                    // Cek 1: Apakah ada kata TSUNAMI?
+                    if (potensiUpper.includes('TSUNAMI')) {
+                        // Cek 2: Apakah ada kata TIDAK?
+                        if (potensiUpper.includes('TIDAK')) {
+                            // Ada TSUNAMI tapi ada TIDAK = Hijau
+                            badgePotensi = `<span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 8px 15px; border-radius: 5px; border: 1px solid #00ff88; font-weight: bold;">TIDAK BERPOTENSI TSUNAMI</span>`;
+                        } else {
+                            // Ada TSUNAMI dan TIDAK ada penyangkalan = Merah
+                            badgePotensi = `<span style="background: rgba(255, 56, 56, 0.2); color: #ff3838; padding: 8px 15px; border-radius: 5px; border: 1px solid #ff3838; font-weight: bold;">BERPOTENSI TSUNAMI</span>`;
+                        }
+                    } else {
+                        // Jika kalimatnya "Gempa ini dirasakan..." (Tidak ada kata Tsunami) = Hijau
+                        badgePotensi = `<span style="background: rgba(0, 255, 136, 0.2); color: #00ff88; padding: 8px 15px; border-radius: 5px; border: 1px solid #00ff88; font-weight: bold;">TIDAK BERPOTENSI TSUNAMI</span>`;
+                    }
+
+                    // ... lanjutkan kode html template literal ...
+
+                    let html = '';
+                    list.slice(0, 5).forEach(g => {
+                        html += `
                         <div class="alert-item warning">
                             <div style="display:flex; justify-content:space-between;">
                                 <strong>M ${g.Magnitude}</strong>
@@ -863,31 +862,31 @@ if (!$latest) {
                             <div style="font-size: 11px; opacity: 0.7;">Dirasakan: ${g.Dirasakan}</div>
                         </div>
                     `;
-                });
-                document.getElementById('felt-earthquakes').innerHTML = html;
-            } catch (e) {
-                console.error(e);
+                    });
+                    document.getElementById('felt-earthquakes').innerHTML = html;
+                } catch (e) {
+                    console.error(e);
+                }
             }
-        }
-        // FUNGSI ANIMASI TOMBOL SINKRONISASI
-        function animateSync(btn) {
-            const icon = document.getElementById('icon-sync');
-            const text = document.getElementById('text-sync');
+            // FUNGSI ANIMASI TOMBOL SINKRONISASI
+            function animateSync(btn) {
+                const icon = document.getElementById('icon-sync');
+                const text = document.getElementById('text-sync');
 
-            // Ubah tampilan agar user tahu proses sedang berjalan
-            icon.classList.add('fa-spin'); // Class bawaan fontawesome untuk putar
-            text.innerText = "Menyinkronkan...";
-            btn.style.opacity = "0.8";
-            btn.style.pointerEvents = "none"; // Cegah double click
+                // Ubah tampilan agar user tahu proses sedang berjalan
+                icon.classList.add('fa-spin'); // Class bawaan fontawesome untuk putar
+                text.innerText = "Menyinkronkan...";
+                btn.style.opacity = "0.8";
+                btn.style.pointerEvents = "none"; // Cegah double click
 
-            return true; // Lanjutkan link ke sync_gempa.php
-        }
+                return true; // Lanjutkan link ke sync_gempa.php
+            }
 
-        // Jalankan Fetch saat load
-        fetchLatestEarthquake();
-        fetchTableData();
-        fetchFelt();
-    </script>
+            // Jalankan Fetch saat load
+            fetchLatestEarthquake();
+            fetchTableData();
+            fetchFelt();
+        </script>
 </body>
 
 </html>
