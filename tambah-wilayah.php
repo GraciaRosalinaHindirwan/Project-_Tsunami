@@ -379,9 +379,6 @@ if (isset($_POST['simpan'])) {
                 <a href="petaadmin.php" class="nav-btn">
                     <i class="fas fa-map"></i> Peta
                 </a>
-                <a href="tambah-wilayah.php" class="nav-btn active">
-                <i class="fas fa-map-marked-alt"></i> Kelola Wilayah
-                </a>
                 <a href="logout.php" class="nav-btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>

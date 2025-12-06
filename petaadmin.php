@@ -365,10 +365,7 @@ $total_admin = $data_count['total'];
                     <i class="fas fa-home"></i> Dashboard
                 </a>
                 <a href="petaadmin.php" class="nav-btn active">
-                    <i class="fas fa-map"></i> Kelola Wilayah
-                </a>
-                <a href="tambah-wilayah.php" class="nav-btn">
-                <i class="fas fa-map-marked-alt"></i> Tambah Wilayah
+                     <i class="fas fa-map"></i> Peta
                 </a>
                 <a href="logout.php" class="nav-btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
